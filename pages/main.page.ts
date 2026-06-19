@@ -10,7 +10,7 @@ export default class MainPage {
         this.header = new HeaderComponent(page);
     }
 
-    async clickOnSignIn(){
+    async clickOnSignInLink(){
         await this.header.clickSignInLnk();
     }
 
