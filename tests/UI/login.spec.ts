@@ -25,8 +25,13 @@ test.describe("Login Test Cases", async () => {
 
   test("Login page renders components correctly", async ({ page }) => {
     const lp = new LoginPage(page);
-    // await lp.
+    await expect(lp.getSignInTitle()).toBeVisible();
+    await expect(lp.getEmailInput()).toBeVisible();
+    await expect(lp.getPasswordInput()).toBeVisible();
+    await expect(lp.getSignInButton()).toBeVisible();
   });
+
+  // test('')
 
 
 
