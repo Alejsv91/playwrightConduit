@@ -6,6 +6,7 @@ export default class LoginPage extends MainPage {
   private readonly emailInput: Locator;
   private readonly passwordInput: Locator;
   private readonly signInButton: Locator;
+  private readonly invalidUserPasswordError: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -13,6 +14,27 @@ export default class LoginPage extends MainPage {
     this.emailInput = page.getByRole("textbox", { name: "Email" });
     this.passwordInput = page.getByRole("textbox", { name: "password" });
     this.signInButton = page.getByRole("button", { name: "Sign In" });
+    this.invalidUserPasswordError = page.getByText('email or password is invalid');
+  }
+
+  async addLoginCredentials(username: string){
+
+  }
+
+  async clickOnSignInButton(){
+    await this.signInButton.click();
+  }
+
+  async addValueOnPasswordInput(password: string){
+    await this.passwordInput.fill(password);
+  }
+
+  async addValueOnEmailInput(email: string){
+    await this.emailInput.fill(email);
+  }
+
+  getInvalidUserPasswordError(){
+    return this.invalidUserPasswordError;
   }
 
   getSignInTitle() {
