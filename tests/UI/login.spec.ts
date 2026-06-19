@@ -1,14 +1,16 @@
-import { test, expect, request } from '@playwright/test';
-import HomePage from '../../pages/home.page';
-import LoginPage from '../../pages/login.page';
+import { test, expect, request } from "@playwright/test";
+import HomePage from "../../pages/home.page";
+import LoginPage from "../../pages/login.page";
+import { UserFactory } from "../../utils/userFactory";
 
-test.describe('Login Test Cases', async () => {
-  const fakeEmail = 'fakeEmail@test.com';
-  const fakePassword = 'test1234!';
+test.describe("Login Test Cases", async () => {
+  const fakeUser = UserFactory.fakeUser();
+  const realUser = UserFactory.realUser();
+
   test.beforeEach(async ({ page }) => {
     const [apiResponse] = await Promise.all([
-      page.waitForResponse('**/api/articles?limit=10&offset=0'),
-      page.goto('/'),
+      page.waitForResponse("**/api/articles?limit=10&offset=0"),
+      page.goto("/"),
     ]);
 
     //API Check
@@ -24,7 +26,7 @@ test.describe('Login Test Cases', async () => {
     await homePage.clickOnSignInLink();
   });
 
-  test('Login page renders components correctly', async ({ page }) => {
+  test("Login page renders components correctly", async ({ page }) => {
     const lp = new LoginPage(page);
     await expect(lp.getSignInTitle()).toBeVisible();
     await expect(lp.getEmailInput()).toBeVisible();
@@ -32,22 +34,25 @@ test.describe('Login Test Cases', async () => {
     await expect(lp.getSignInButton()).toBeVisible();
   });
 
-  test('Adding invalid Credentials', async ({ page }) => {
+  test("Adding invalid Credentials", async ({ page }) => {
     const lp = new LoginPage(page);
-    await fillAndAssertCredentials(lp, fakeEmail, fakePassword);
+    await fillAndAssertCredentials(lp, fakeUser.email, fakeUser.password);
     await lp.clickOnSignInButton();
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
   });
 
-  test('Adding valid username but fake password', async ({ page }) => {
+  test("Adding valid username but fake password", async ({ page }) => {
     const lp = new LoginPage(page);
-    await fillAndAssertCredentials(lp, fakeEmail, fakePassword);
+    await fillAndAssertCredentials(lp, realUser.email, fakeUser.password);
     await lp.clickOnSignInButton();
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
   });
 
-  test('Adding fake username but real password', async({ page })=> {
-
+  test("Adding fake username but real password", async ({ page }) => {
+    const lp = new LoginPage(page);
+    await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
+    await lp.clickOnSignInButton();
+    await expect(lp.getInvalidUserPasswordError()).toBeVisible();
   });
 
   async function fillAndAssertCredentials(
