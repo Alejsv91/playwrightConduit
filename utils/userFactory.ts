@@ -4,7 +4,8 @@ export const UserFactory = {
     realUser(): User{
         return {
             email: process.env.EMAIL!,
-            password: process.env.PASSWORD!
+            password: process.env.PASSWORD!,
+            username: process.env.USERNAME!
         }
     },
     fakeUser(): User{

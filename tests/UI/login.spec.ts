@@ -24,7 +24,7 @@ test.describe("Login Test Cases", async () => {
 
     //Navigate to Login
     await homePage.clickOnSignInLink();
-  });
+  })
 
   test("Login page renders components correctly", async ({ page }) => {
     const lp = new LoginPage(page);
@@ -32,28 +32,40 @@ test.describe("Login Test Cases", async () => {
     await expect(lp.getEmailInput()).toBeVisible();
     await expect(lp.getPasswordInput()).toBeVisible();
     await expect(lp.getSignInButton()).toBeVisible();
-  });
+  })
 
   test("Adding invalid Credentials", async ({ page }) => {
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, fakeUser.email, fakeUser.password);
     await lp.clickOnSignInButton();
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
-  });
+  })
 
   test("Adding valid username but fake password", async ({ page }) => {
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, realUser.email, fakeUser.password);
     await lp.clickOnSignInButton();
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
-  });
+  })
 
   test("Adding fake username but real password", async ({ page }) => {
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
     await lp.clickOnSignInButton();
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
-  });
+  })
+
+  test("Login with expected credentials", async ({page})=>{
+    const lp = new LoginPage(page);
+    await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
+    await lp.clickOnSignInButton();
+    await lp.getUserNameHeader(realUser.username!);
+  })
+
+  //PENDING Test
+  //WHen user only add username
+  //When user only add password
+  //When user don't add credentials
 
   async function fillAndAssertCredentials(
     lp: LoginPage,
@@ -65,4 +77,4 @@ test.describe("Login Test Cases", async () => {
     await lp.addValueOnPasswordInput(password);
     await expect(lp.getPasswordInput()).toHaveValue(password);
   }
-});
+})

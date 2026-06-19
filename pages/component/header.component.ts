@@ -1,19 +1,21 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page } from "@playwright/test";
 
 export class HeaderComponent {
-    protected readonly webIcon: Locator;
-    protected readonly page: Page; 
-    protected readonly signIn: Locator;
+  protected readonly webIcon: Locator;
+  protected readonly page: Page;
+  protected readonly signIn: Locator;
 
-    constructor(page: Page) {
-        this.page = page;
-        this.webIcon = page.locator('.web-icon');
-        this.signIn = page.getByRole('link', {name: 'Sign In'});
-    }
+  constructor(page: Page) {
+    this.page = page;
+    this.webIcon = page.locator(".web-icon");
+    this.signIn = page.getByRole("link", { name: "Sign In" });
+  }
 
-    async clickSignInLnk() {
-        await this.signIn.click();
-    }
+  async clickSignInLnk() {
+    await this.signIn.click();
+  }
 
+  getUsernameHeader(username: string) {
+    return this.page.getByRole('navigation').getByText(username);
+  }
 }
-
