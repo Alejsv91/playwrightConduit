@@ -1,22 +1,39 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, APIRequestContext, APIResponse } from "@playwright/test";
 import { UserFactory } from "../../utils/userFactory";
 import { Endpoints } from "../../utils/endpoints";
+import { User } from "../../utils/user";
 
-test.describe("UI Login test", () => {
+test.describe("API Login test", () => {
   const realUser = UserFactory.realUser();
   const fakeUser = UserFactory.fakeUser();
   const loginApiUrl = `${process.env.API_URL}${Endpoints.login}`;
 
   test(
+    "Adding real email and fake password",
+    { tag: ["@negative scenario", "@api"] },
+    async ({ request }) => {
+      const updatedUser = UserFactory.realUser();
+      updatedUser.password = "fakePassword123?";
+      const response = await createApiLoginRequest(
+        updatedUser,
+        request,
+        loginApiUrl
+      );
+
+      ExpectWhenCredsAreInvalid(response);
+    }
+  );
+
+  test(
     "Adding fake username and password",
     { tag: ["@negative scenario"] },
     async ({ request }) => {
-      const response = await request.post(loginApiUrl, {
-        data: {
-          user: { email: fakeUser.email, password: fakeUser.password },
-        },
-      });
-      expect(response.status()).not.toEqual(200);
+      const response = await createApiLoginRequest(
+        fakeUser,
+        request,
+        loginApiUrl
+      );
+      ExpectWhenCredsAreInvalid(response);
     }
   );
 
@@ -24,18 +41,11 @@ test.describe("UI Login test", () => {
     "Login with expected credentials",
     { tag: ["@API", "@Positive"] },
     async ({ request }) => {
-      const response = await request.post(
-        loginApiUrl,
-
-        {
-          data: {
-            user: { email: realUser.email, password: realUser.password },
-          },
-        }
+      const response = await createApiLoginRequest(
+        realUser,
+        request,
+        loginApiUrl
       );
-      //405 - Method Not Allowed (We found the method, but the action is not allowed)
-      //404 - Server don't found the URL
-      //403 - Server knows how I am, But I don't have permissions
 
       expect(response.status()).toBe(200);
 
@@ -44,18 +54,28 @@ test.describe("UI Login test", () => {
       expect(body.user).toHaveProperty("token");
 
       const token = body.user.token;
-      if (response.status() !== 200) {
-        const errorBody = await response.json();
-        console.error(
-          `Login failed with status ${response.status()}:`,
-          errorBody
-        );
-      }
-      expect(response.status()).toBe(200);
+      
       expect(token).not.toBeNull();
       expect(body.user.username).toEqual(realUser.username);
       expect(body.user.image).toEqual(realUser.image);
-      expect(body.user.bio).toBeNull;
+      expect(body.user.bio).toBeNull();
     }
   );
+
+  async function ExpectWhenCredsAreInvalid(response: APIResponse) {
+    expect(response.status()).not.toEqual(200);
+    const body = await response.json();
+    expect(body.errors).toHaveProperty("email or password");
+    expect(body.errors["email or password"][0]).toBe("is invalid");
+  }
+
+  async function createApiLoginRequest(
+    user: User,
+    request: APIRequestContext,
+    url: string
+  ) {
+    return request.post(url, {
+      data: { user: { email: user.email, password: user.password } },
+    });
+  }
 });
