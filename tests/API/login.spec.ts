@@ -9,8 +9,6 @@ test.describe("UI Login test", () => {
 
   test("Login with expected credentials", {tag: ['@API', '@Positive']}, async ({ request }) => {
     const loginApiUrl = `${apiUrl}${Endpoints.login}`;
-    console.log(`API Login is:${loginApiUrl}`);
-    console.log(`Username is: ${realUser.email} and password is ${realUser.password}`);
     const response = await request.post(
       loginApiUrl,
 
@@ -41,5 +39,7 @@ test.describe("UI Login test", () => {
     expect(response.status()).toBe(200);
     expect(token).not.toBeNull();
     expect(body.user.username).toEqual(realUser.username);
+    expect(body.user.image).toEqual(realUser.image);
+    expect(body.user.bio).toBeNull
   });
 });
