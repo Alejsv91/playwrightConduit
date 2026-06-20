@@ -7,7 +7,7 @@ test.describe("UI Login test", () => {
   const fakeUser = UserFactory.fakeUser();
   const API_URL = process.env.API_URL;
 
-  test("Login with expected credentials", {tag: '@fast'}, async ({ request }) => {
+  test("Login with expected credentials", {tag: ['@API', '@Positive']}, async ({ request }) => {
     const loginApiUrl = `${API_URL}${Endpoints.login}`;
     console.log(`API Login is:${loginApiUrl}`);
     console.log(`Username is: ${realUser.email} and password is ${realUser.password}`);
