@@ -3,6 +3,7 @@ import HomePage from "../../pages/home.page";
 import LoginPage from "../../pages/login.page";
 import { UserFactory } from "../../utils/userFactory";
 import { Endpoints } from "../../utils/endpoints";
+import { Routes } from "../../utils/routes";
 
 test.describe("Login Test Cases", async () => {
   const fakeUser = UserFactory.fakeUser();
@@ -25,6 +26,7 @@ test.describe("Login Test Cases", async () => {
 
     //Navigate to Login
     await homePage.clickOnSignInLink();
+    await page.waitForURL(`**${Routes.login}`);
   })
 
   test("Login page renders components correctly", async ({ page }) => {
