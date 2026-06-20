@@ -7,7 +7,7 @@ test.describe("UI Login test", () => {
   const fakeUser = UserFactory.fakeUser();
 
   test("Login with expected credentials", {tag: '@fast'}, async ({ request }) => {
-    const loginApiUrl = `${process.env.APIURL}${Endpoints.login}`;
+    const loginApiUrl = `https://conduit-api.bondaracademy.com${Endpoints.login}`;
     console.log(`API Login is:${loginApiUrl}`);
     console.log(`Username is: ${realUser.email} and password is ${realUser.password}`);
     const response = await request.post(
