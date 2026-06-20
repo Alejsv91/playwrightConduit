@@ -8,6 +8,18 @@ test.describe("API Login test", () => {
   const fakeUser = UserFactory.fakeUser();
   const loginApiUrl = `${process.env.API_URL}${Endpoints.login}`;
 
+  test("Adding fake email but real password", {tag: ['@negative scenario', '@api']}, async({request})=>{
+    const updatedUser = UserFactory.realUser();
+      updatedUser.email = "fake@fake.com";
+      const response = await createApiLoginRequest(
+        updatedUser,
+        request,
+        loginApiUrl
+      );
+
+      ExpectWhenCredsAreInvalid(response);
+  })
+
   test(
     "Adding real email and fake password",
     { tag: ["@negative scenario", "@api"] },
