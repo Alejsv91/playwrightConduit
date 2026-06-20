@@ -1,12 +1,11 @@
 import { expect, test, APIResponse } from "@playwright/test";
 import { UserFactory } from "../../utils/userFactory";
 import { Endpoints } from "../../utils/endpoints";
-import { postLoginRequest } from "../../utils/api/auth.ap";
+import { postLoginRequest } from "../../utils/api/auth.app";
 
 test.describe("API Login test", () => {
   const realUser = UserFactory.realUser();
   const fakeUser = UserFactory.fakeUser();
-  const loginApiUrl = `${process.env.API_URL}${Endpoints.login}`;
 
   test(
     "Adding real username but no password",
@@ -16,8 +15,7 @@ test.describe("API Login test", () => {
       updatedUser.password = "";
       const response = await postLoginRequest(
         updatedUser,
-        request,
-        loginApiUrl
+        request
       );
 
       expect(response.status()).not.toEqual(200);
@@ -36,8 +34,7 @@ test.describe("API Login test", () => {
       updatedUser.password = "";
       const response = await postLoginRequest(
         updatedUser,
-        request,
-        loginApiUrl
+        request
       );
 
       expect(response.status()).not.toEqual(200);
@@ -55,8 +52,7 @@ test.describe("API Login test", () => {
       updatedUser.email = "fake@fake.com";
       const response = await postLoginRequest(
         updatedUser,
-        request,
-        loginApiUrl
+        request
       );
 
       ExpectWhenCredsAreInvalid(response);
@@ -71,8 +67,7 @@ test.describe("API Login test", () => {
       updatedUser.password = "fakePassword123?";
       const response = await postLoginRequest(
         updatedUser,
-        request,
-        loginApiUrl
+        request
       );
 
       ExpectWhenCredsAreInvalid(response);
@@ -85,8 +80,7 @@ test.describe("API Login test", () => {
     async ({ request }) => {
       const response = await postLoginRequest(
         fakeUser,
-        request,
-        loginApiUrl
+        request
       );
       ExpectWhenCredsAreInvalid(response);
     }
@@ -98,8 +92,7 @@ test.describe("API Login test", () => {
     async ({ request }) => {
       const response = await postLoginRequest(
         realUser,
-        request,
-        loginApiUrl
+        request
       );
 
       expect(response.status()).toBe(200);
