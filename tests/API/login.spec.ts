@@ -1,4 +1,4 @@
-import { expect, test, APIRequestContext, APIResponse } from "@playwright/test";
+import { expect, test, APIResponse } from "@playwright/test";
 import { UserFactory } from "../../utils/userFactory";
 import { Endpoints } from "../../utils/endpoints";
 import { postLoginRequest } from "../../utils/api/auth.ap";
