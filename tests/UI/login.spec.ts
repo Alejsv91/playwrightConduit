@@ -2,6 +2,7 @@ import { test, expect, request } from "@playwright/test";
 import HomePage from "../../pages/home.page";
 import LoginPage from "../../pages/login.page";
 import { UserFactory } from "../../utils/userFactory";
+import { Endpoints } from "../../utils/endpoints";
 
 test.describe("Login Test Cases", async () => {
   const fakeUser = UserFactory.fakeUser();
@@ -9,7 +10,7 @@ test.describe("Login Test Cases", async () => {
 
   test.beforeEach(async ({ page }) => {
     const [apiResponse] = await Promise.all([
-      page.waitForResponse("**/api/articles?limit=10&offset=0"),
+      page.waitForResponse(`**${Endpoints.articles()}`),
       page.goto("/"),
     ]);
 
