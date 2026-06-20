@@ -29,7 +29,7 @@ test.describe("Login Test Cases", async () => {
     await page.waitForURL(`**${Routes.login}`);
   })
 
-  test("Login page renders components correctly", async ({ page }) => {
+  test("Login page renders components correctly", {tag: ['@ui', '@positive scenario']}, async ({ page }) => {
     const lp = new LoginPage(page);
     await expect(lp.getSignInTitle()).toBeVisible();
     await expect(lp.getEmailInput()).toBeVisible();
@@ -37,28 +37,28 @@ test.describe("Login Test Cases", async () => {
     await expect(lp.getSignInButton()).toBeVisible();
   })
 
-  test("Adding invalid Credentials", async ({ page }) => {
+  test("Adding invalid Credentials", {tag: ['@ui', '@negative scenario']}, async ({ page }) => {
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, fakeUser.email, fakeUser.password);
     await lp.clickOnSignInButton();
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
   })
 
-  test("Adding valid username but fake password", async ({ page }) => {
+  test("Adding valid username but fake password",{tag: ['@ui', '@negative scenario']}, async ({ page }) => {
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, realUser.email, fakeUser.password);
     await lp.clickOnSignInButton();
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
   })
 
-  test("Adding fake username but real password", async ({ page }) => {
+  test("Adding fake username but real password",{tag: ['@ui', '@negative scenario']}, async ({ page }) => {
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
     await lp.clickOnSignInButton();
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
   })
 
-  test("Login with expected credentials", {tag: '@slow'}, async ({page})=>{
+  test("Login with expected credentials", {tag: ['@ui', '@positive scenario']}, async ({page})=>{
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
     await lp.clickOnSignInButton();
