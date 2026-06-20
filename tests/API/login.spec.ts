@@ -8,8 +8,50 @@ test.describe("API Login test", () => {
   const fakeUser = UserFactory.fakeUser();
   const loginApiUrl = `${process.env.API_URL}${Endpoints.login}`;
 
-  test("Adding fake email but real password", {tag: ['@negative scenario', '@api']}, async({request})=>{
-    const updatedUser = UserFactory.realUser();
+  test(
+    "Adding real username but no password",
+    { tag: ["@negative scenario", "@api"] },
+    async ({ request }) => {
+      const updatedUser = UserFactory.realUser();
+      updatedUser.password = "";
+      const response = await createApiLoginRequest(
+        updatedUser,
+        request,
+        loginApiUrl
+      );
+
+      expect(response.status()).not.toEqual(200);
+      const body = await response.json();
+      expect(body.errors).toHaveProperty("password");
+      expect(body.errors["password"][0]).toBe("can't be blank");
+    }
+  );
+
+  test(
+    "Adding empty username and empty password",
+    { tag: ["@negative scenario", "@api"] },
+    async ({ request }) => {
+      const updatedUser = UserFactory.realUser();
+      updatedUser.email = "";
+      updatedUser.password = "";
+      const response = await createApiLoginRequest(
+        updatedUser,
+        request,
+        loginApiUrl
+      );
+
+      expect(response.status()).not.toEqual(200);
+      const body = await response.json();
+      expect(body.errors).toHaveProperty("email");
+      expect(body.errors["email"][0]).toBe("can't be blank");
+    }
+  );
+
+  test(
+    "Adding fake email but real password",
+    { tag: ["@negative scenario", "@api"] },
+    async ({ request }) => {
+      const updatedUser = UserFactory.realUser();
       updatedUser.email = "fake@fake.com";
       const response = await createApiLoginRequest(
         updatedUser,
@@ -18,7 +60,8 @@ test.describe("API Login test", () => {
       );
 
       ExpectWhenCredsAreInvalid(response);
-  })
+    }
+  );
 
   test(
     "Adding real email and fake password",
@@ -66,7 +109,7 @@ test.describe("API Login test", () => {
       expect(body.user).toHaveProperty("token");
 
       const token = body.user.token;
-      
+
       expect(token).not.toBeNull();
       expect(body.user.username).toEqual(realUser.username);
       expect(body.user.image).toEqual(realUser.image);
