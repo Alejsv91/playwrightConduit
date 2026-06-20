@@ -58,7 +58,7 @@ test.describe("Login Test Cases", async () => {
     await expect(lp.getInvalidUserPasswordError()).toBeVisible();
   })
 
-  test("Login with expected credentials", async ({page})=>{
+  test("Login with expected credentials", {tag: '@slow'}, async ({page})=>{
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
     await lp.clickOnSignInButton();

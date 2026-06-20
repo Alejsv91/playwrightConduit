@@ -1,5 +1,4 @@
 import { expect, test } from "@playwright/test";
-import { Routes } from "../../utils/routes";
 import { UserFactory } from "../../utils/userFactory";
 import { Endpoints } from "../../utils/endpoints";
 
@@ -7,10 +6,11 @@ test.describe("UI Login test", () => {
   const realUser = UserFactory.realUser();
   const fakeUser = UserFactory.fakeUser();
 
-  test("Login with expected credentials", async ({ request }) => {
+  test("Login with expected credentials", {tag: '@fast'}, async ({ request }) => {
     const loginApiUrl = `${process.env.APIURL}${Endpoints.login}`;
+    console.log(`API Login is:${loginApiUrl}`);
+    console.log(`Username is: ${realUser.email} and password is ${realUser.password}`);
     const response = await request.post(
-      //   `${process.env.URL}${Endpoints.login}`,
       loginApiUrl,
 
       {
@@ -38,5 +38,6 @@ test.describe("UI Login test", () => {
       );
     }
     expect(response.status()).toBe(200);
+    expect(token).not.toBeNull();
   });
 });
