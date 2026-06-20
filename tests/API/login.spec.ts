@@ -40,5 +40,6 @@ test.describe("UI Login test", () => {
     }
     expect(response.status()).toBe(200);
     expect(token).not.toBeNull();
+    expect(body.user.username).toEqual(realUser.username);
   });
 });
