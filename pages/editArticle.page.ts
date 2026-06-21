@@ -19,7 +19,7 @@ export default class EditArticle extends MainPage {
     });
     this.tagsTextbox = page.getByRole("textbox", { name: "Enter tags" });
     this.publishArticleButton = page.getByRole("button", {
-      name: "Publis Article",
+      name: "Publish Article",
     });
   }
 

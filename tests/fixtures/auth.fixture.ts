@@ -29,7 +29,7 @@ export const test = base.extend<AuthFixtures>({
 
     // Abrir la app ya autenticado
     await page.goto("/");
-    await page.waitForResponse(`${process.env.API_URL}${Endpoints.articles()}`);
+    await page.waitForResponse(`${process.env.API_URL}${Endpoints.articles(10,0)}`);
 
     await use(page);
   },
