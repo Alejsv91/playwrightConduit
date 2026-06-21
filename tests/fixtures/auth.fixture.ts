@@ -28,7 +28,8 @@ export const test = base.extend<AuthFixtures>({
     }, token);
 
     // Abrir la app ya autenticado
-    await page.goto("https://conduit.bondaracademy.com");
+    await page.goto("/");
+    await page.waitForResponse(`${process.env.API_URL}${Endpoints.articles()}`);
 
     await use(page);
   },

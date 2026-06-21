@@ -10,11 +10,23 @@ export default class MainPage {
     this.header = new HeaderComponent(page);
   }
 
-  async clickOnSignInLink() {
-    await this.header.clickSignInLnk();
+  getNewArticleLink(): Locator{
+    return this.header.getNewArticleLink();
   }
 
-  getUserNameHeader(username: string) {
+  getSignInLink(): Locator{
+    return this.header.getSignInLink();
+  }
+
+  getUsernameHeader(username: string) {
     return this.header.getUsernameHeader(username);
+  }
+
+  async ClickOnNewArticleLink(){
+    await this.header.clickNewArticleLink();
+  }
+
+  async clickOnSignInLink() {
+    await this.header.clickSignInLink();
   }
 }

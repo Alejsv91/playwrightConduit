@@ -62,7 +62,7 @@ test.describe("Login Test Cases", async () => {
     const lp = new LoginPage(page);
     await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
     await lp.clickOnSignInButton();
-    await lp.getUserNameHeader(realUser.username!);
+    await lp.getUsernameHeader(realUser.username!);
   })
 
   //PENDING Test
