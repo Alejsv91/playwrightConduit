@@ -1,10 +1,10 @@
-import { test as base } from "@playwright/test";
+import { test as base, Page } from "@playwright/test";
 import { UserFactory } from "../../utils/userFactory";
 import { Endpoints } from "../../utils/endpoints";
 
 type AuthFixtures = {
   token: string;
-  authenticatedPage: any;
+  authenticatedPage: Page;
 };
 
 export const test = base.extend<AuthFixtures>({
