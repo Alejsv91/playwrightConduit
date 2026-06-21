@@ -25,6 +25,7 @@ test.describe("test cases related with articles", async () => {
     const description = "Description test from UI";
     const tags = ['automation', 'playwright', 'ui'];
 
+    //Creating article
     await expect(
       editArticle.getUsernameHeader(realUser.username!)
     ).toBeVisible();
@@ -36,6 +37,7 @@ test.describe("test cases related with articles", async () => {
     await expect(editArticle.getDescriptionTextBox()).toHaveValue(description);
     await addTags(tags, editArticle, authenticatedPage);
 
+    //Validate article is created as expected
     const [apiResponse] = await Promise.all([
       authenticatedPage.waitForResponse(
         `${process.env.API_URL}${Endpoints.articles()}`
@@ -51,6 +53,7 @@ test.describe("test cases related with articles", async () => {
     await expect(article.getTitleElement()).toHaveText(title);
     await expect(article.getDescriptionElement()).toHaveText(description);
     await expect(article.getTags()).toHaveText(tags);
+    await expect(article.getAuthorLinkElementInArticleComponent(realUser.username!));
   });
 
   async function addTags(tags: Array<string>, editArticle: EditArticle, authenticatedPage: Page){
@@ -58,6 +61,5 @@ test.describe("test cases related with articles", async () => {
       await editArticle.AddTag(tag);
       authenticatedPage.keyboard.press('Enter');
     }
-
   }
 });
