@@ -4,4 +4,5 @@ export interface User{
     username?: string
     image?: string
     bio?: string | null
+    following?: boolean | null
 }
