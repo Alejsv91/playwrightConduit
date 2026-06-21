@@ -11,7 +11,7 @@ test.describe("Login Test Cases", async () => {
 
   test.beforeEach(async ({ page }) => {
     const [apiResponse] = await Promise.all([
-      page.waitForResponse(`**${Endpoints.articles()}`),
+      page.waitForResponse(`**${Endpoints.articles(10, 0)}`),
       page.goto("/"),
     ]);
 

@@ -22,12 +22,10 @@ export const test = base.extend<AuthFixtures>({
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    // Inyectar EXACTAMENTE lo que Conduit usa
     await page.addInitScript((jwt) => {
       window.localStorage.setItem("jwtToken", jwt);
     }, token);
-
-    // Abrir la app ya autenticado
+    
     await page.goto("/");
     await page.waitForResponse(`${process.env.API_URL}${Endpoints.articles(10,0)}`);
 
