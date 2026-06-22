@@ -1,6 +1,6 @@
 import { Article } from "./article";
 
-export const articleFactory = {
+export const ArticleFactory = {
   multipleTagsArticle: (browserName: string, isApiTest: boolean): Article => {
     return {
       title: `Test from ${isApiTest ? 'API' : 'UI'} from ${browserName} ${Date.now()}`,
