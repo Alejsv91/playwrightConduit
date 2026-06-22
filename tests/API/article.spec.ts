@@ -13,7 +13,7 @@ test.describe("API testing for Articles", async () => {
   test(
     "Creating article by API",
     { tag: ["@api", "@positive"] },
-    async ({ browserName, createdArticleByApi, articleObject }) => {
+    async ({ createdArticleByApi, articleObject }) => {
       testArticle = articleObject;
       realUser.following = false;
 

@@ -5,7 +5,6 @@ export default class Article extends MainPage{
     private readonly titleElement: Locator;
     private readonly descriptionElement: Locator;
     private readonly tagElements: Locator;
-    private readonly authorLink: Locator;
 
     constructor(page: Page){
         super(page);
