@@ -41,7 +41,7 @@ test.describe("API testing for Articles", async () => {
     }
   );
 
-  test.only(
+  test(
     "Read the created article",
     { tag: ["@api", "@positive"] },
     async ({ request, token, createdArticleByApi }) => {
