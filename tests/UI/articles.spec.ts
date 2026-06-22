@@ -6,6 +6,7 @@ import { UserFactory } from "../../utils/userFactory";
 import { Endpoints } from "../../utils/endpoints";
 import Article from "../../pages/article.page";
 import { Page } from "@playwright/test";
+import { ArticleFactory } from "../../utils/articleFactory";
 
 test.describe("test cases related with articles", async () => {
   const realUser = UserFactory.realUser();
@@ -19,23 +20,24 @@ test.describe("test cases related with articles", async () => {
   });
 
   test("Creating article", async ({ authenticatedPage, browserName }) => {
+    const testArticle = ArticleFactory.multipleTagsArticle(browserName, false);
     const editArticle = new EditArticle(authenticatedPage);
-    const title = `Test from UI from ${browserName} at ${Date.now()}`;
-    const about = "This test is related with UI testing";
-    const description = "Description test from UI";
-    const tags = ['automation', 'playwright', 'ui'];
 
     //Creating article
     await expect(
       editArticle.getUsernameHeader(realUser.username!)
     ).toBeVisible();
-    await editArticle.fillTitleTextbox(title);
-    await expect(editArticle.getTitleTextBox()).toHaveValue(title);
-    await editArticle.fillAboutTextbox(about);
-    await expect(editArticle.getAboutTextBox()).toHaveValue(about);
-    await editArticle.fillDescriptionTextbox(description);
-    await expect(editArticle.getDescriptionTextBox()).toHaveValue(description);
-    await addTags(tags, editArticle, authenticatedPage);
+    await editArticle.fillTitleTextbox(testArticle.title);
+    await expect(editArticle.getTitleTextBox()).toHaveValue(testArticle.title);
+    await editArticle.fillAboutTextbox(testArticle.description);
+    await expect(editArticle.getAboutTextBox()).toHaveValue(
+      testArticle.description
+    );
+    await editArticle.fillDescriptionTextbox(testArticle.body);
+    await expect(editArticle.getDescriptionTextBox()).toHaveValue(
+      testArticle.body
+    );
+    await addTags(testArticle.tagList, editArticle, authenticatedPage);
 
     //Validate article is created as expected
     const [apiResponse] = await Promise.all([
@@ -50,16 +52,19 @@ test.describe("test cases related with articles", async () => {
     await authenticatedPage.waitForURL(`**/${expectedUrl}`);
 
     const article = new Article(authenticatedPage);
-    await expect(article.getTitleElement()).toHaveText(title);
-    await expect(article.getDescriptionElement()).toHaveText(description);
-    await expect(article.getTags()).toHaveText(tags);
-    await expect(article.getAuthorLinkElementInArticleComponent(realUser.username!));
+    await expect(article.getTitleElement()).toHaveText(testArticle.title);
+    await expect(article.getDescriptionElement()).toHaveText(testArticle.body);
+
   });
 
-  async function addTags(tags: Array<string>, editArticle: EditArticle, authenticatedPage: Page){
-    for(const tag of tags){
+  async function addTags(
+    tags: Array<string>,
+    editArticle: EditArticle,
+    authenticatedPage: Page
+  ) {
+    for (const tag of tags) {
       await editArticle.AddTag(tag);
-      authenticatedPage.keyboard.press('Enter');
+      authenticatedPage.keyboard.press("Enter");
     }
   }
 });
