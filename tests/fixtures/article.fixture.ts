@@ -13,7 +13,7 @@ export const test = base.extend<ArticleFixtures>({
     articleObject: async ({browserName}, use) =>{
         await use(ArticleFactory.multipleTagsArticle(browserName, true));
     },
-  createdArticleByApi: async ({ request, token, browserName, articleObject }, use) => {
+  createdArticleByApi: async ({ request, token, articleObject }, use) => {
     const articleURL = `${process.env.API_URL}${Endpoints.articles()}`;
 
     const articleResponse = await request.post(articleURL, {
