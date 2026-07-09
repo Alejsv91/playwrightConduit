@@ -1,4 +1,4 @@
-import { Article } from "./article";
+import { Article } from "./interfaces/article";
 
 export const ArticleFactory = {
   multipleTagsArticle: (browserName: string, isApiTest: boolean): Article => {

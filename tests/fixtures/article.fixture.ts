@@ -2,7 +2,7 @@ import { APIResponse } from "@playwright/test";
 import { ArticleFactory } from "../../utils/articleFactory";
 import { Endpoints } from "../../utils/endpoints";
 import { test as base } from "../fixtures/auth.fixture";
-import { Article } from "../../utils/article";
+import { Article } from "../../utils/interfaces/article";
 
 type ArticleFixtures = {
   createdArticleByApi: APIResponse;

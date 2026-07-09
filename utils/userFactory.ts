@@ -1,4 +1,4 @@
-import { User } from './user';
+import { User } from './interfaces/user';
 import { Endpoints } from './endpoints';
 
 export const UserFactory = {

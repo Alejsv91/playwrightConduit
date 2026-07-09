@@ -1,5 +1,5 @@
 import { APIRequestContext } from "@playwright/test";
-import { User } from "../user";
+import { User } from "../interfaces/user";
 import { Endpoints } from "../endpoints";
 
 export async function postLoginRequest(

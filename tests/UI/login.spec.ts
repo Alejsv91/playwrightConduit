@@ -34,7 +34,7 @@ test.describe("Login Test Cases", async () => {
     await expect(lp.getSignInTitle()).toBeVisible();
     await expect(lp.getEmailInput()).toBeVisible();
     await expect(lp.getPasswordInput()).toBeVisible();
-    await expect(lp.getSignInButton()).toBeVisible();
+    await expect(await lp.getSignInButton()).toBeVisible();
   })
 
   test("Adding invalid Credentials", {tag: ['@ui', '@negative scenario']}, async ({ page }) => {

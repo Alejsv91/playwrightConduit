@@ -1,0 +1,292 @@
+- generic [ref=f2e2]:
+  - navigation [ref=f2e4]:
+    - generic:
+      - link "conduit" [ref=f2e5] [cursor=pointer]:
+        - /url: /
+      - list [ref=f2e6]:
+        - listitem [ref=f2e7]:
+          - link "Home" [ref=f2e8] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f2e9]:
+          - link " New Article" [ref=f2e10] [cursor=pointer]:
+            - /url: /editor
+            - generic [ref=f2e11]: 
+            - text: New Article
+        - listitem [ref=f2e12]:
+          - link " Settings" [ref=f2e13] [cursor=pointer]:
+            - /url: /settings
+            - generic [ref=f2e14]: 
+            - text: Settings
+        - listitem [ref=f2e15]:
+          - link "alejsv" [ref=f2e16] [cursor=pointer]:
+            - /url: /profile/alejsv
+            - img [ref=f2e17]
+            - text: alejsv
+  - generic [ref=f2e21]:
+    - generic [ref=f2e22]:
+      - list [ref=f2e24]:
+        - listitem [ref=f2e25]:
+          - generic [ref=f2e26] [cursor=pointer]: Your Feed
+        - listitem [ref=f2e27]:
+          - generic [ref=f2e28]: Global Feed
+        - text: 
+      - generic [ref=f2e29]:
+        - generic [ref=f2e31]:
+          - generic [ref=f2e33]:
+            - link [ref=f2e34] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e35]
+            - generic [ref=f2e36]:
+              - link "alejsv" [ref=f2e37] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e38]: July 7, 2026
+            - button " 1" [active] [ref=f2e252] [cursor=pointer]:
+              - generic [ref=f2e41]: 
+              - text: "1"
+          - link "Playwright MCP Test Article 1783446157 Created via Playwright MCP Read more... playwright mcp" [ref=f2e42] [cursor=pointer]:
+            - /url: /article/Playwright-MCP-Test-Article-1783446157-56121
+            - heading "Playwright MCP Test Article 1783446157" [level=1] [ref=f2e43]
+            - paragraph [ref=f2e44]: Created via Playwright MCP
+            - text: Read more...
+            - list [ref=f2e45]:
+              - listitem [ref=f2e46]: playwright mcp
+        - generic [ref=f2e48]:
+          - generic [ref=f2e50]:
+            - link [ref=f2e51] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e52]
+            - generic [ref=f2e53]:
+              - link "alejsv" [ref=f2e54] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e55]: July 1, 2026
+            - button " 0" [ref=f2e57] [cursor=pointer]:
+              - generic [ref=f2e58]: 
+              - text: "0"
+          - link "Test from UI from webkit 1782945351828 Automation with playwright Read more... Test automation ui" [ref=f2e59] [cursor=pointer]:
+            - /url: /article/Test-from-UI-from-webkit-1782945351828-56121
+            - heading "Test from UI from webkit 1782945351828" [level=1] [ref=f2e60]
+            - paragraph [ref=f2e61]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e62]:
+              - listitem [ref=f2e63]: Test
+              - listitem [ref=f2e64]: automation
+              - listitem [ref=f2e65]: ui
+        - generic [ref=f2e67]:
+          - generic [ref=f2e69]:
+            - link [ref=f2e70] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e71]
+            - generic [ref=f2e72]:
+              - link "alejsv" [ref=f2e73] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e74]: July 1, 2026
+            - button " 0" [ref=f2e76] [cursor=pointer]:
+              - generic [ref=f2e77]: 
+              - text: "0"
+          - link "Test from API from webkit 1782945347961 Automation with playwright Read more... Test automation API" [ref=f2e78] [cursor=pointer]:
+            - /url: /article/Test-from-API-from-webkit-1782945347961-56121
+            - heading "Test from API from webkit 1782945347961" [level=1] [ref=f2e79]
+            - paragraph [ref=f2e80]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e81]:
+              - listitem [ref=f2e82]: Test
+              - listitem [ref=f2e83]: automation
+              - listitem [ref=f2e84]: API
+        - generic [ref=f2e86]:
+          - generic [ref=f2e88]:
+            - link [ref=f2e89] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e90]
+            - generic [ref=f2e91]:
+              - link "alejsv" [ref=f2e92] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e93]: July 1, 2026
+            - button " 0" [ref=f2e95] [cursor=pointer]:
+              - generic [ref=f2e96]: 
+              - text: "0"
+          - link "Test from API from webkit 1782945347603 Automation with playwright Read more... Test automation API" [ref=f2e97] [cursor=pointer]:
+            - /url: /article/Test-from-API-from-webkit-1782945347603-56121
+            - heading "Test from API from webkit 1782945347603" [level=1] [ref=f2e98]
+            - paragraph [ref=f2e99]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e100]:
+              - listitem [ref=f2e101]: Test
+              - listitem [ref=f2e102]: automation
+              - listitem [ref=f2e103]: API
+        - generic [ref=f2e105]:
+          - generic [ref=f2e107]:
+            - link [ref=f2e108] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e109]
+            - generic [ref=f2e110]:
+              - link "alejsv" [ref=f2e111] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e112]: July 1, 2026
+            - button " 0" [ref=f2e114] [cursor=pointer]:
+              - generic [ref=f2e115]: 
+              - text: "0"
+          - link "Test from UI from firefox 1782945338127 Automation with playwright Read more... Test automation ui" [ref=f2e116] [cursor=pointer]:
+            - /url: /article/Test-from-UI-from-firefox-1782945338127-56121
+            - heading "Test from UI from firefox 1782945338127" [level=1] [ref=f2e117]
+            - paragraph [ref=f2e118]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e119]:
+              - listitem [ref=f2e120]: Test
+              - listitem [ref=f2e121]: automation
+              - listitem [ref=f2e122]: ui
+        - generic [ref=f2e124]:
+          - generic [ref=f2e126]:
+            - link [ref=f2e127] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e128]
+            - generic [ref=f2e129]:
+              - link "alejsv" [ref=f2e130] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e131]: July 1, 2026
+            - button " 0" [ref=f2e133] [cursor=pointer]:
+              - generic [ref=f2e134]: 
+              - text: "0"
+          - link "Test from API from firefox 1782945334413 Automation with playwright Read more... Test automation API" [ref=f2e135] [cursor=pointer]:
+            - /url: /article/Test-from-API-from-firefox-1782945334413-56121
+            - heading "Test from API from firefox 1782945334413" [level=1] [ref=f2e136]
+            - paragraph [ref=f2e137]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e138]:
+              - listitem [ref=f2e139]: Test
+              - listitem [ref=f2e140]: automation
+              - listitem [ref=f2e141]: API
+        - generic [ref=f2e143]:
+          - generic [ref=f2e145]:
+            - link [ref=f2e146] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e147]
+            - generic [ref=f2e148]:
+              - link "alejsv" [ref=f2e149] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e150]: July 1, 2026
+            - button " 0" [ref=f2e152] [cursor=pointer]:
+              - generic [ref=f2e153]: 
+              - text: "0"
+          - link "Test from API from firefox 1782945334052 Automation with playwright Read more... Test automation API" [ref=f2e154] [cursor=pointer]:
+            - /url: /article/Test-from-API-from-firefox-1782945334052-56121
+            - heading "Test from API from firefox 1782945334052" [level=1] [ref=f2e155]
+            - paragraph [ref=f2e156]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e157]:
+              - listitem [ref=f2e158]: Test
+              - listitem [ref=f2e159]: automation
+              - listitem [ref=f2e160]: API
+        - generic [ref=f2e162]:
+          - generic [ref=f2e164]:
+            - link [ref=f2e165] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e166]
+            - generic [ref=f2e167]:
+              - link "alejsv" [ref=f2e168] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e169]: July 1, 2026
+            - button " 0" [ref=f2e171] [cursor=pointer]:
+              - generic [ref=f2e172]: 
+              - text: "0"
+          - link "Test from UI from chromium 1782945325562 Automation with playwright Read more... Test automation ui" [ref=f2e173] [cursor=pointer]:
+            - /url: /article/Test-from-UI-from-chromium-1782945325562-56121
+            - heading "Test from UI from chromium 1782945325562" [level=1] [ref=f2e174]
+            - paragraph [ref=f2e175]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e176]:
+              - listitem [ref=f2e177]: Test
+              - listitem [ref=f2e178]: automation
+              - listitem [ref=f2e179]: ui
+        - generic [ref=f2e181]:
+          - generic [ref=f2e183]:
+            - link [ref=f2e184] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e185]
+            - generic [ref=f2e186]:
+              - link "alejsv" [ref=f2e187] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e188]: July 1, 2026
+            - button " 0" [ref=f2e190] [cursor=pointer]:
+              - generic [ref=f2e191]: 
+              - text: "0"
+          - link "Test from API from chromium 1782945322289 Automation with playwright Read more... Test automation API" [ref=f2e192] [cursor=pointer]:
+            - /url: /article/Test-from-API-from-chromium-1782945322289-56121
+            - heading "Test from API from chromium 1782945322289" [level=1] [ref=f2e193]
+            - paragraph [ref=f2e194]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e195]:
+              - listitem [ref=f2e196]: Test
+              - listitem [ref=f2e197]: automation
+              - listitem [ref=f2e198]: API
+        - generic [ref=f2e200]:
+          - generic [ref=f2e202]:
+            - link [ref=f2e203] [cursor=pointer]:
+              - /url: /profile/alejsv
+              - img [ref=f2e204]
+            - generic [ref=f2e205]:
+              - link "alejsv" [ref=f2e206] [cursor=pointer]:
+                - /url: /profile/alejsv
+              - generic [ref=f2e207]: July 1, 2026
+            - button " 0" [ref=f2e209] [cursor=pointer]:
+              - generic [ref=f2e210]: 
+              - text: "0"
+          - link "Test from API from chromium 1782945321896 Automation with playwright Read more... Test automation API" [ref=f2e211] [cursor=pointer]:
+            - /url: /article/Test-from-API-from-chromium-1782945321896-56121
+            - heading "Test from API from chromium 1782945321896" [level=1] [ref=f2e212]
+            - paragraph [ref=f2e213]: Automation with playwright
+            - text: Read more...
+            - list [ref=f2e214]:
+              - listitem [ref=f2e215]: Test
+              - listitem [ref=f2e216]: automation
+              - listitem [ref=f2e217]: API
+        - navigation [ref=f2e218]:
+          - list [ref=f2e219]:
+            - listitem:
+              - button "1" [ref=f2e220]
+            - listitem:
+              - button "2" [ref=f2e221] [cursor=pointer]
+            - listitem:
+              - button "3" [ref=f2e222] [cursor=pointer]
+            - listitem:
+              - button "4" [ref=f2e223] [cursor=pointer]
+            - listitem:
+              - button "5" [ref=f2e224] [cursor=pointer]
+            - listitem:
+              - button "6" [ref=f2e225] [cursor=pointer]
+            - listitem:
+              - button "7" [ref=f2e226] [cursor=pointer]
+            - listitem:
+              - button "8" [ref=f2e227] [cursor=pointer]
+            - listitem:
+              - button "9" [ref=f2e228] [cursor=pointer]
+            - listitem:
+              - button "10" [ref=f2e229] [cursor=pointer]
+            - listitem:
+              - button "11" [ref=f2e230] [cursor=pointer]
+            - listitem:
+              - button "12" [ref=f2e231] [cursor=pointer]
+    - generic [ref=f2e233]:
+      - paragraph [ref=f2e234]: Popular Tags
+      - generic [ref=f2e235]:
+        - generic [ref=f2e236] [cursor=pointer]: playwright
+        - generic [ref=f2e237] [cursor=pointer]: Test
+        - generic [ref=f2e238] [cursor=pointer]: automation
+        - generic [ref=f2e239] [cursor=pointer]: API
+        - generic [ref=f2e240] [cursor=pointer]: Blog
+        - generic [ref=f2e241] [cursor=pointer]: Coding
+        - generic [ref=f2e242] [cursor=pointer]: YouTube
+        - generic [ref=f2e243] [cursor=pointer]: Git
+        - generic [ref=f2e244] [cursor=pointer]: ui
+        - generic [ref=f2e245] [cursor=pointer]: Bondar Academy
+  - contentinfo [ref=f2e246]:
+    - generic [ref=f2e247]:
+      - link "conduit" [ref=f2e248] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f2e249]:
+        - text: © 2026. An interactive learning project from
+        - link "RealWorld OSS Project" [ref=f2e250] [cursor=pointer]:
+          - /url: https://github.com/gothinkster/realworld
+        - text: . Code licensed under MIT. Hosted by
+        - link "Bondar Academy" [ref=f2e251] [cursor=pointer]:
+          - /url: https://bondaracademy.com
+        - text: .
