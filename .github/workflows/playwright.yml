@@ -4,6 +4,11 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
+permissions:
+  id-token: write   # NEW: required so GitHub can request the OIDC token
+  contents: read     # NEW: standard read-only permission for checkout
+
 jobs:
   test:
     timeout-minutes: 60
@@ -15,6 +20,8 @@ jobs:
       URL: ${{ secrets.URL }}
       API_URL: ${{ secrets.API_URL }}
       ANTHROPIC_API_KEY: ${{secrets.ANTHROPIC_API_KEY}}
+      AWS_REGION: us-east-1                              # NEW
+      SELF_HEAL_LOG_GROUP: /playwright/self-healing       # NEW
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -24,6 +31,15 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+
+    # --- NEW: AWS authentication block via OIDC ---
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}   # kept out of the public repo on purpose
+        aws-region: us-east-1
+    # --- end new block ---
+
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
