@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import { LocatorStrategy } from "../utils/interfaces/locatorStrategy";
 import { resilientLocator } from "../utils/resilientLocator";
 import { SelfHealingMcp } from "../utils/interfaces/selfHealingMcp";
 import MainPage from "./main.page";

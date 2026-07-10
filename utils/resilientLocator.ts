@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import { LocatorStrategy } from "./interfaces/locatorStrategy";
 import { SelfHealingMcp } from "./interfaces/selfHealingMcp";
 import { AiLocatorSuggestion } from "./interfaces/aiLocatorSuggestion";
 import { getAiLocatorSuggestions } from "./aiLocatorClient";
@@ -10,12 +11,9 @@ function buildLocatorFromSuggestion(
   switch (suggestion.method) {
     case "role":
       if (!suggestion.role) throw new Error("Missing 'role' suggestion");
-      return page.getByRole(
-        suggestion.role as Parameters<Page["getByRole"]>[0],
-        {
-          name: suggestion.name,
-        }
-      );
+      return page.getByRole(suggestion.role as Parameters<Page["getByRole"]>[0], {
+        name: suggestion.name,
+      });
     case "text":
       if (!suggestion.value) throw new Error("Missing 'value' suggestion");
       return page.getByText(suggestion.value);
@@ -26,7 +24,7 @@ function buildLocatorFromSuggestion(
       if (!suggestion.value) throw new Error("Missing 'value' suggestion");
       return page.getByLabel(suggestion.value);
     default:
-      throw new Error(`Unkown suggestion method: ${suggestion.method}`);
+      throw new Error(`Unknow suggested method: ${suggestion.method}`);
   }
 }
 
@@ -40,6 +38,7 @@ export async function resilientLocator(
         state: "visible",
         timeout: index === 0 ? 15000 : 1000,
       });
+      console.log(`Locator ${l.strategy} at index ${index} matched successfully.`);
       return l.locator;
     } catch (error) {
       console.warn(
@@ -48,7 +47,9 @@ export async function resilientLocator(
     }
   }
 
-  console.warn( `All strategies failed to locate element ${selfHealingMcp.prompt}. Trying with AI`);
+  console.warn(
+    `Static strategies fail "${selfHealingMcp.prompt}". Trying with AI.`
+  );
 
   const accessibilitySnapshot = await page.locator("body").ariaSnapshot();
   const suggestions = await getAiLocatorSuggestions(
@@ -56,20 +57,22 @@ export async function resilientLocator(
     accessibilitySnapshot
   );
 
-  for(const [index, suggestion] of suggestions.entries()) {
+  for (const [index, suggestion] of suggestions.entries()) {
     try {
-        const aiLocator = buildLocatorFromSuggestion(page, suggestion);
-        await aiLocator.waitFor({state: "visible", timeout: 5000});
-        console.warn(`AI suggestion ${suggestion.method} at index ${index} matched an element. Using this locator.`);
-        return aiLocator;
-    } catch (error) {
+      const aiLocator = buildLocatorFromSuggestion(page, suggestion);
+      await aiLocator.waitFor({ state: "visible", timeout: 5000 });
       console.warn(
-        `AI suggestion ${suggestion.method} at index ${index} did not match any elements. Trying next suggestion.`
+        `AI Fallback works method="${suggestion.method}" (suggestion ${index}).`
+      );
+      return aiLocator;
+    } catch {
+      console.warn(
+        `AI suggestion ${index} (method="${suggestion.method}") element not found. Trying next AI suggestion.`
       );
     }
   }
 
   throw new Error(
-    `All strategies failed inclding AI suggestions for prompt: ${selfHealingMcp.prompt}`
+    `Element is not finded "${selfHealingMcp.prompt}" with static and AI strategies.`
   );
 }
