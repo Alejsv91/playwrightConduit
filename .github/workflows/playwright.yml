@@ -6,8 +6,8 @@ on:
     branches: [ main, master ]
 
 permissions:
-  id-token: write   # NEW: required so GitHub can request the OIDC token
-  contents: read     # NEW: standard read-only permission for checkout
+  id-token: write
+  contents: read
 
 jobs:
   test:
