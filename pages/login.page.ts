@@ -1,13 +1,14 @@
 import { Locator, Page } from "@playwright/test";
 import { LocatorStrategy } from "../utils/interfaces/locatorStrategy";
 import { resilientLocator } from "../utils/resilientLocator";
+import { SelfHealingMcp } from "../utils/interfaces/selfHealingMcp";
 import MainPage from "./main.page";
 
 export default class LoginPage extends MainPage {
   private readonly signInTitle: Locator;
   private readonly emailInput: Locator;
   private readonly passwordInput: Locator;
-  private readonly signInButton: LocatorStrategy[];
+  private readonly signInButton: SelfHealingMcp;
   private readonly invalidUserPasswordError: Locator;
 
   constructor(page: Page) {
@@ -15,20 +16,23 @@ export default class LoginPage extends MainPage {
     this.signInTitle = page.getByRole("heading", { name: "Sign In" });
     this.emailInput = page.getByRole("textbox", { name: "Email" });
     this.passwordInput = page.getByRole("textbox", { name: "password" });
-    this.signInButton = [
-      {
-        strategy: "getByRole",
-        locator: page.getByRole("button", { name: "Sign In" }),
-      },
-      {
-        strategy: "cssLocator",
-        locator: page.locator('fieldset > button:has-text("Sign In")'),
-      },
-      {
-        strategy: "getByText",
-        locator: page.locator("fieldset").getByText("Sign In"),
-      },
-    ];
+    this.signInButton = {
+      prompt: "Sign In button",
+      locatorStrategies: [
+        {
+          strategy: "getByRole",
+          locator: page.getByRole("button", { name: "Sign In" }),
+        },
+        {
+          strategy: "cssLocator",
+          locator: page.locator('fieldset > button:has-text("Sign In")'),
+        },
+        {
+          strategy: "getByText",
+          locator: page.locator("fieldset").getByText("Sign In"),
+        },
+      ],
+    };
     this.invalidUserPasswordError = page.getByText(
       "email or password is invalid"
     );
@@ -37,7 +41,7 @@ export default class LoginPage extends MainPage {
   async addLoginCredentials(username: string) {}
 
   async clickOnSignInButton() {
-    const locator = await resilientLocator(this.signInButton);
+    const locator = await resilientLocator(this.page, this.signInButton);
     await locator.click();
   }
 
@@ -66,6 +70,6 @@ export default class LoginPage extends MainPage {
   }
 
   getSignInButton(): Promise<Locator> {
-    return resilientLocator(this.signInButton);
+    return resilientLocator(this.page, this.signInButton);
   }
 }
