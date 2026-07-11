@@ -22,15 +22,15 @@ export default class LoginPage extends MainPage {
       locatorStrategies: [
         {
           strategy: "getByRole",
-          locator: page.getByRole("button", { name: "Sign In Fail" }),
+          locator: page.getByRole("button", { name: "Sign In" }),
         },
         {
           strategy: "cssLocator",
-          locator: page.locator('fieldset > button:has-text("Sign In Fail")'),
+          locator: page.locator('fieldset > button:has-text("Sign In")'),
         },
         {
           strategy: "getByText",
-          locator: page.locator("fieldset").getByText("Sign In Fail"),
+          locator: page.locator("fieldset").getByText("Sign In"),
         },
       ],
     };

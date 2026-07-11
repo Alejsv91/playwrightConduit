@@ -2,7 +2,12 @@
   "name": "playwrightconduit",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:report": "npx playwright show-report",
+    "test:api": "npx playwright test --grep @api"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

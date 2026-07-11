@@ -76,7 +76,7 @@ test.describe("API Login test", () => {
 
   test(
     "Adding fake username and password",
-    { tag: ["@negative scenario"] },
+    { tag: ["@negative scenario", "@api"] },
     async ({ request }) => {
       const response = await postLoginRequest(
         fakeUser,
@@ -88,7 +88,7 @@ test.describe("API Login test", () => {
 
   test(
     "Login with expected credentials",
-    { tag: ["@API", "@Positive"] },
+    { tag: ["@api", "@positive scenario"] },
     async ({ request }) => {
       const response = await postLoginRequest(
         realUser,
