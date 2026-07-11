@@ -9,7 +9,7 @@ test.describe("API Login test", () => {
 
   test(
     "Adding real username but no password",
-    { tag: ["@negative scenario", "@api"] },
+    { tag: ["@negative", "@api"] },
     async ({ request }) => {
       const updatedUser = UserFactory.realUser();
       updatedUser.password = "";
@@ -27,7 +27,7 @@ test.describe("API Login test", () => {
 
   test(
     "Adding empty username and empty password",
-    { tag: ["@negative scenario", "@api"] },
+    { tag: ["@negative", "@api"] },
     async ({ request }) => {
       const updatedUser = UserFactory.realUser();
       updatedUser.email = "";
@@ -46,7 +46,7 @@ test.describe("API Login test", () => {
 
   test(
     "Adding fake email but real password",
-    { tag: ["@negative scenario", "@api"] },
+    { tag: ["@negative", "@api"] },
     async ({ request }) => {
       const updatedUser = UserFactory.realUser();
       updatedUser.email = "fake@fake.com";
@@ -61,7 +61,7 @@ test.describe("API Login test", () => {
 
   test(
     "Adding real email and fake password",
-    { tag: ["@negative scenario", "@api"] },
+    { tag: ["@negative", "@api"] },
     async ({ request }) => {
       const updatedUser = UserFactory.realUser();
       updatedUser.password = "fakePassword123?";
@@ -76,7 +76,7 @@ test.describe("API Login test", () => {
 
   test(
     "Adding fake username and password",
-    { tag: ["@negative scenario", "@api"] },
+    { tag: ["@negative", "@api"] },
     async ({ request }) => {
       const response = await postLoginRequest(
         fakeUser,
@@ -88,7 +88,7 @@ test.describe("API Login test", () => {
 
   test(
     "Login with expected credentials",
-    { tag: ["@api", "@positive scenario"] },
+    { tag: ["@api", "@positive"] },
     async ({ request }) => {
       const response = await postLoginRequest(
         realUser,

@@ -19,7 +19,7 @@ test.describe("test cases related with articles", async () => {
     await authenticatedPage.waitForURL(Routes.editArticle);
   });
 
-  test("Creating article", {tag: ["@positive scenario", "@ui"]}, async ({ authenticatedPage, browserName }) => {
+  test("Creating article", {tag: ["@positive", "@ui"]}, async ({ authenticatedPage, browserName }) => {
     const testArticle = ArticleFactory.multipleTagsArticle(browserName, false);
     const editArticle = new EditArticle(authenticatedPage);
 

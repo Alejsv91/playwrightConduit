@@ -43,7 +43,7 @@ test.describe("API testing for Articles", async () => {
 
   test(
     "Read the created article",
-    { tag: ["@api", "@positive scenario"] },
+    { tag: ["@api", "@positive"] },
     async ({ request, token, createdArticleByApi }) => {
       const createdArticle = createdArticleByApi;
       const bodyResponse = await createdArticle.json();

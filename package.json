@@ -6,7 +6,10 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:report": "npx playwright show-report",
-    "test:api": "npx playwright test --grep @api"
+    "test:api": "npx playwright test --grep @api",
+    "test:ui": "npx playwright test --grep @ui",
+    "test:positive": "npx playwright test --grep @positive",
+    "test:negative": "npx playwright test --grep @negative"
   },
   "keywords": [],
   "author": "",

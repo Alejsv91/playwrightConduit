@@ -31,7 +31,7 @@ test.describe("Login Test Cases", async () => {
 
   test(
     "Login page renders components correctly",
-    { tag: ["@ui", "@positive scenario"] },
+    { tag: ["@ui", "@positive"] },
     async ({ page }, testInfo) => {
       const lp = new LoginPage(page, testInfo.title);
       await expect(lp.getSignInTitle()).toBeVisible();
@@ -43,7 +43,7 @@ test.describe("Login Test Cases", async () => {
 
   test(
     "Adding invalid Credentials",
-    { tag: ["@ui", "@negative scenario"] },
+    { tag: ["@ui", "@negative"] },
     async ({ page }, testInfo) => {
       const lp = new LoginPage(page, testInfo.title);
       await fillAndAssertCredentials(lp, fakeUser.email, fakeUser.password);
@@ -54,7 +54,7 @@ test.describe("Login Test Cases", async () => {
 
   test(
     "Adding valid username but fake password",
-    { tag: ["@ui", "@negative scenario"] },
+    { tag: ["@ui", "@negative"] },
     async ({ page }, testInfo) => {
       const lp = new LoginPage(page, testInfo.title);
       await fillAndAssertCredentials(lp, realUser.email, fakeUser.password);
@@ -65,7 +65,7 @@ test.describe("Login Test Cases", async () => {
 
   test(
     "Adding fake username but real password",
-    { tag: ["@ui", "@negative scenario"] },
+    { tag: ["@ui", "@negative"] },
     async ({ page }, testInfo) => {
       const lp = new LoginPage(page, testInfo.title);
       await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
@@ -76,7 +76,7 @@ test.describe("Login Test Cases", async () => {
 
   test(
     "Login with expected credentials",
-    { tag: ["@ui", "@positive scenario"] },
+    { tag: ["@ui", "@positive"] },
     async ({ page }, testInfo) => {
       const lp = new LoginPage(page, testInfo.title);
       await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
