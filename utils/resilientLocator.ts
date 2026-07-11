@@ -11,9 +11,12 @@ function buildLocatorFromSuggestion(
   switch (suggestion.method) {
     case "role":
       if (!suggestion.role) throw new Error("Missing 'role' suggestion");
-      return page.getByRole(suggestion.role as Parameters<Page["getByRole"]>[0], {
-        name: suggestion.name,
-      });
+      return page.getByRole(
+        suggestion.role as Parameters<Page["getByRole"]>[0],
+        {
+          name: suggestion.name,
+        }
+      );
     case "text":
       if (!suggestion.value) throw new Error("Missing 'value' suggestion");
       return page.getByText(suggestion.value);
@@ -38,11 +41,23 @@ export async function resilientLocator(
         state: "visible",
         timeout: index === 0 ? 15000 : 1000,
       });
-      console.log(`Locator ${l.strategy} at index ${index} matched successfully.`);
-      logSelectorFailure('Any Test', l.strategy, `Locator at index ${index} matched successfully.`);
+      if (index > 0) {
+        console.log(
+          `Locator ${l.strategy} at index ${index} matched successfully.`
+        );
+        await logSelectorFailure(
+          "Any Test",
+          l.strategy,
+          `Locator at index ${index} matched successfully.`
+        );
+      }
       return l.locator;
     } catch (error) {
-      logSelectorFailure('Any Test', l.strategy, `Locator at index ${index} did not match any elements. Error: ${error}`);
+      await logSelectorFailure(
+        "Any Test",
+        l.strategy,
+        `Locator at index ${index} did not match any elements. Error: ${error}`
+      );
       console.warn(
         `Locator ${l.strategy} at index ${index} did not match any elements. Trying next locator.`
       );
@@ -63,22 +78,34 @@ export async function resilientLocator(
     try {
       const aiLocator = buildLocatorFromSuggestion(page, suggestion);
       await aiLocator.waitFor({ state: "visible", timeout: 5000 });
-      logSelectorFailure('Any Test', suggestion.method, `AI suggestion at index ${index} matched successfully.`);
+      await logSelectorFailure(
+        "Any Test",
+        suggestion.method,
+        `AI suggestion at index ${index} matched successfully.`
+      );
       console.warn(
         `AI Fallback works method="${suggestion.method}" (suggestion ${index}).`
       );
       return aiLocator;
     } catch {
-      logSelectorFailure('Any Test', suggestion.method, `AI suggestion at index ${index} did not match any elements.`);
+      await logSelectorFailure(
+        "Any Test",
+        suggestion.method,
+        `AI suggestion at index ${index} did not match any elements.`
+      );
       console.warn(
         `AI suggestion ${index} (method="${suggestion.method}") element not found. Trying next AI suggestion.`
       );
     }
   }
 
-  logSelectorFailure('Any Test', 'All Strategies', `Element "${selfHealingMcp.prompt}" not found with static and AI strategies.`);
+  await logSelectorFailure(
+    "Any Test",
+    "All Strategies",
+    `Element "${selfHealingMcp.prompt}" not found with static and AI strategies.`
+  );
 
   throw new Error(
-    `Element is not finded "${selfHealingMcp.prompt}" with static and AI strategies.`
+    `Element was not found "${selfHealingMcp.prompt}" with static and AI strategies.`
   );
 }
