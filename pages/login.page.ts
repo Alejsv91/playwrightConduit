@@ -9,9 +9,11 @@ export default class LoginPage extends MainPage {
   private readonly passwordInput: Locator;
   private readonly signInButton: SelfHealingMcp;
   private readonly invalidUserPasswordError: Locator;
+  private readonly testName: string;
 
-  constructor(page: Page) {
+  constructor(page: Page, testName: string) {
     super(page);
+    this.testName = testName;
     this.signInTitle = page.getByRole("heading", { name: "Sign In" });
     this.emailInput = page.getByRole("textbox", { name: "Email" });
     this.passwordInput = page.getByRole("textbox", { name: "password" });
@@ -40,7 +42,7 @@ export default class LoginPage extends MainPage {
   async addLoginCredentials(username: string) {}
 
   async clickOnSignInButton() {
-    const locator = await resilientLocator(this.page, this.signInButton);
+    const locator = await resilientLocator(this.page, this.signInButton, this.testName);
     await locator.click();
   }
 
@@ -69,6 +71,6 @@ export default class LoginPage extends MainPage {
   }
 
   getSignInButton(): Promise<Locator> {
-    return resilientLocator(this.page, this.signInButton);
+    return resilientLocator(this.page, this.signInButton, this.testName);
   }
 }

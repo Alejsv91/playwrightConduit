@@ -6,7 +6,7 @@ import { logSelectorFailure } from "./cloudwatch-logger";
 
 function buildLocatorFromSuggestion(
   page: Page,
-  suggestion: AiLocatorSuggestion
+  suggestion: AiLocatorSuggestion,
 ): Locator {
   switch (suggestion.method) {
     case "role":
@@ -33,7 +33,8 @@ function buildLocatorFromSuggestion(
 
 export async function resilientLocator(
   page: Page,
-  selfHealingMcp: SelfHealingMcp
+  selfHealingMcp: SelfHealingMcp,
+  testName: string
 ): Promise<Locator> {
   for (const [index, l] of selfHealingMcp.locatorStrategies.entries()) {
     try {
@@ -46,7 +47,7 @@ export async function resilientLocator(
           `Locator ${l.strategy} at index ${index} matched successfully.`
         );
         await logSelectorFailure(
-          "Any Test",
+          testName,
           l.strategy,
           `Locator at index ${index} matched successfully.`
         );
@@ -54,7 +55,7 @@ export async function resilientLocator(
       return l.locator;
     } catch (error) {
       await logSelectorFailure(
-        "Any Test",
+        testName,
         l.strategy,
         `Locator at index ${index} did not match any elements. Error: ${error}`
       );
@@ -79,7 +80,7 @@ export async function resilientLocator(
       const aiLocator = buildLocatorFromSuggestion(page, suggestion);
       await aiLocator.waitFor({ state: "visible", timeout: 5000 });
       await logSelectorFailure(
-        "Any Test",
+        testName,
         suggestion.method,
         `AI suggestion at index ${index} matched successfully.`
       );
@@ -89,7 +90,7 @@ export async function resilientLocator(
       return aiLocator;
     } catch {
       await logSelectorFailure(
-        "Any Test",
+        testName,
         suggestion.method,
         `AI suggestion at index ${index} did not match any elements.`
       );
@@ -100,7 +101,7 @@ export async function resilientLocator(
   }
 
   await logSelectorFailure(
-    "Any Test",
+    testName,
     "All Strategies",
     `Element "${selfHealingMcp.prompt}" not found with static and AI strategies.`
   );

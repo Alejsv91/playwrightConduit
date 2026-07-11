@@ -1,4 +1,4 @@
-import { test, expect, request } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 import HomePage from "../../pages/home.page";
 import LoginPage from "../../pages/login.page";
 import { UserFactory } from "../../utils/userFactory";
@@ -9,7 +9,7 @@ test.describe("Login Test Cases", async () => {
   const fakeUser = UserFactory.fakeUser();
   const realUser = UserFactory.realUser();
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page }, testInfo) => {
     const [apiResponse] = await Promise.all([
       page.waitForResponse(`**${Endpoints.articles(10, 0)}`),
       page.goto("/"),
@@ -27,43 +27,63 @@ test.describe("Login Test Cases", async () => {
     //Navigate to Login
     await homePage.clickOnSignInLink();
     await page.waitForURL(`**${Routes.login}`);
-  })
+  });
 
-  test("Login page renders components correctly", {tag: ['@ui', '@positive scenario']}, async ({ page }) => {
-    const lp = new LoginPage(page);
-    await expect(lp.getSignInTitle()).toBeVisible();
-    await expect(lp.getEmailInput()).toBeVisible();
-    await expect(lp.getPasswordInput()).toBeVisible();
-    await expect(await lp.getSignInButton()).toBeVisible();
-  })
+  test(
+    "Login page renders components correctly",
+    { tag: ["@ui", "@positive scenario"] },
+    async ({ page }, testInfo) => {
+      const lp = new LoginPage(page, testInfo.title);
+      await expect(lp.getSignInTitle()).toBeVisible();
+      await expect(lp.getEmailInput()).toBeVisible();
+      await expect(lp.getPasswordInput()).toBeVisible();
+      await expect(await lp.getSignInButton()).toBeVisible();
+    }
+  );
 
-  test("Adding invalid Credentials", {tag: ['@ui', '@negative scenario']}, async ({ page }) => {
-    const lp = new LoginPage(page);
-    await fillAndAssertCredentials(lp, fakeUser.email, fakeUser.password);
-    await lp.clickOnSignInButton();
-    await expect(lp.getInvalidUserPasswordError()).toBeVisible();
-  })
+  test(
+    "Adding invalid Credentials",
+    { tag: ["@ui", "@negative scenario"] },
+    async ({ page }, testInfo) => {
+      const lp = new LoginPage(page, testInfo.title);
+      await fillAndAssertCredentials(lp, fakeUser.email, fakeUser.password);
+      await lp.clickOnSignInButton();
+      await expect(lp.getInvalidUserPasswordError()).toBeVisible();
+    }
+  );
 
-  test("Adding valid username but fake password",{tag: ['@ui', '@negative scenario']}, async ({ page }) => {
-    const lp = new LoginPage(page);
-    await fillAndAssertCredentials(lp, realUser.email, fakeUser.password);
-    await lp.clickOnSignInButton();
-    await expect(lp.getInvalidUserPasswordError()).toBeVisible();
-  })
+  test(
+    "Adding valid username but fake password",
+    { tag: ["@ui", "@negative scenario"] },
+    async ({ page }, testInfo) => {
+      const lp = new LoginPage(page, testInfo.title);
+      await fillAndAssertCredentials(lp, realUser.email, fakeUser.password);
+      await lp.clickOnSignInButton();
+      await expect(lp.getInvalidUserPasswordError()).toBeVisible();
+    }
+  );
 
-  test("Adding fake username but real password",{tag: ['@ui', '@negative scenario']}, async ({ page }) => {
-    const lp = new LoginPage(page);
-    await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
-    await lp.clickOnSignInButton();
-    await expect(lp.getInvalidUserPasswordError()).toBeVisible();
-  })
+  test(
+    "Adding fake username but real password",
+    { tag: ["@ui", "@negative scenario"] },
+    async ({ page }, testInfo) => {
+      const lp = new LoginPage(page, testInfo.title);
+      await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
+      await lp.clickOnSignInButton();
+      await expect(lp.getInvalidUserPasswordError()).toBeVisible();
+    }
+  );
 
-  test("Login with expected credentials", {tag: ['@ui', '@positive scenario']}, async ({page})=>{
-    const lp = new LoginPage(page);
-    await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
-    await lp.clickOnSignInButton();
-    await lp.getUsernameHeader(realUser.username!);
-  })
+  test(
+    "Login with expected credentials",
+    { tag: ["@ui", "@positive scenario"] },
+    async ({ page }, testInfo) => {
+      const lp = new LoginPage(page, testInfo.title);
+      await fillAndAssertCredentials(lp, fakeUser.email, realUser.password);
+      await lp.clickOnSignInButton();
+      await lp.getUsernameHeader(realUser.username!);
+    }
+  );
 
   //PENDING Test
   //WHen user only add username
@@ -80,4 +100,4 @@ test.describe("Login Test Cases", async () => {
     await lp.addValueOnPasswordInput(password);
     await expect(lp.getPasswordInput()).toHaveValue(password);
   }
-})
+});
