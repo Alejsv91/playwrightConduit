@@ -19,7 +19,7 @@ export const ArticleFactory = {
     };
   },
 
-  standardArtcile: (browserName: string, isApiTest: boolean): Article => {
+  standardArticle: (browserName: string, isApiTest: boolean): Article => {
     return {
       title: `Test from ${isApiTest ? 'API' : 'UI'} from ${browserName} ${Date.now()}`,
       description: 'Automation with playwright',
