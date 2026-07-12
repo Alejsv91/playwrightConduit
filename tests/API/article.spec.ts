@@ -63,7 +63,6 @@ test.describe("API testing for Articles", async () => {
       expect(body.article.updatedAt).toEqual(body.article.createdAt);
       expect(body.article.favorited).toEqual(false);
       expect(body.article.favoritesCount).toEqual(0);
-      
     }
   );
 
