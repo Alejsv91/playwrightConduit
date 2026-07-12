@@ -8,13 +8,13 @@ import { ArticleFactory } from "../../utils/articleFactory";
 import {
   updateArticleRequest,
   getArticleRequest,
+  deleteArticleRequest,
 } from "../../utils/api/article.app";
 
 test.describe("API testing for Articles", async () => {
   let testArticle: Article;
   let realUser = UserFactory.realUser();
   let createdBodyResponse: {};
-  let articleURL = `${process.env.API_URL}${Endpoints.articles()}`;
 
   test(
     "Creating article by API",
@@ -94,6 +94,27 @@ test.describe("API testing for Articles", async () => {
         (await getArticleResponse.json()).article,
         updatedArticle
       );
+    }
+  );
+
+  test(
+    "Delete article by API",
+    { tag: ["@api", "@positive"] },
+    async ({ createdArticleByApi, request, token }) => {
+      const createdArticle = createdArticleByApi;
+      const bodyResponse = await createdArticle.json();
+      const slugId = bodyResponse.article.slug;
+
+      console.log(`Deleting article with slug: ${slugId}`);
+      const deleteResponse = await deleteArticleRequest(request, slugId, token);
+      
+      expect(deleteResponse.status()).toBe(204);
+
+      const getDeletedArticleResponse = await getArticleRequest(
+        request,
+        slugId
+      );
+      expect(getDeletedArticleResponse.status()).toBe(404);
     }
   );
 

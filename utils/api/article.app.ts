@@ -31,6 +31,14 @@ export async function getArticleRequest(
   slug: string
 ){
   return request.get(`${articleURL}${slug}`);
-  
+}
 
+export async function deleteArticleRequest(
+  request: APIRequestContext,
+  slug: string,
+  token: string
+){
+  return request.delete(`${articleURL}${slug}`, {
+    headers: { authorization: `Token ${token}` },
+  });
 }
