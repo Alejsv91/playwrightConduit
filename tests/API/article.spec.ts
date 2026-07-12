@@ -43,7 +43,7 @@ test.describe("API testing for Articles", async () => {
     "Create articles without tag",
     { tag: ["@api", "@positive"] },
     async ({ browserName, request, token }) => {
-      const articleWithoutTag = ArticleFactory.standardArtcile(
+      const articleWithoutTag = ArticleFactory.standardArticle(
         browserName,
         true
       );
@@ -149,7 +149,7 @@ test.describe("API testing for Articles", async () => {
     "Create article without title",
     { tag: ["@api", "@negative"] },
     async ({ request, token, browserName }) => {
-      const articleWithoutTitle = ArticleFactory.standardArtcile(
+      const articleWithoutTitle = ArticleFactory.standardArticle(
         browserName,
         true
       );
@@ -167,7 +167,7 @@ test.describe("API testing for Articles", async () => {
     "Create article without description",
     { tag: ["@api", "@negative"] },
     async ({ request, token, browserName }) => {
-      const articleWithoutTitle = ArticleFactory.standardArtcile(
+      const articleWithoutTitle = ArticleFactory.standardArticle(
         browserName,
         true
       );
@@ -185,7 +185,7 @@ test.describe("API testing for Articles", async () => {
     "Create article without body",
     { tag: ["@api", "@negative"] },
     async ({ request, token, browserName }) => {
-      const articleWithoutTitle = ArticleFactory.standardArtcile(
+      const articleWithoutTitle = ArticleFactory.standardArticle(
         browserName,
         true
       );
