@@ -1,7 +1,7 @@
-import { Article, ArticleResponse } from "./interfaces/article";
+import { Article, ArticlePutRequest, ArticleResponse } from "./interfaces/article";
 
 export const ArticleFactory = {
-  updatedArticle:(currentArticle: ArticleResponse): ArticleResponse => {
+  updatedArticle:(currentArticle: ArticleResponse): ArticlePutRequest => {
     return {...currentArticle,
       title: `${currentArticle.title} updated`,
           description: "Updated Description",

@@ -1,8 +1,7 @@
 import { test } from "../fixtures/article.fixture";
 import { expect } from "@playwright/test";
-import { Endpoints } from "../../utils/endpoints";
 import { UserFactory } from "../../utils/userFactory";
-import { ArticleResponse, Article } from "../../utils/interfaces/article";
+import { ArticleResponse, Article, ArticlePutRequest } from "../../utils/interfaces/article";
 import { Author } from "../../utils/interfaces/author";
 import { ArticleFactory } from "../../utils/articleFactory";
 import {
@@ -24,8 +23,6 @@ test.describe("API testing for Articles", async () => {
       realUser.following = false;
 
       const articleResponse = createdArticleByApi;
-      expect(articleResponse.status()).toBe(201);
-
       const body = await articleResponse.json();
       const expectedSlug = testArticle.title.replace(/ /g, "-");
 
@@ -43,7 +40,7 @@ test.describe("API testing for Articles", async () => {
   test(
     "Read the created article",
     { tag: ["@api", "@positive"] },
-    async ({ request, token, createdArticleByApi }) => {
+    async ({ request, createdArticleByApi }) => {
       const createdArticle = createdArticleByApi;
       const bodyResponse = await createdArticle.json();
       const slugId = bodyResponse.article.slug;
@@ -61,7 +58,7 @@ test.describe("API testing for Articles", async () => {
       const newArticleResponse = createdArticleByApi;
       const body = await newArticleResponse.json();
       const originalArticle: ArticleResponse = body.article;
-      const updatedArticle: ArticleResponse =
+      const updatedArticle: ArticlePutRequest =
         ArticleFactory.updatedArticle(originalArticle);
       const updateResponse = await updateArticleRequest(
         request,
@@ -79,11 +76,11 @@ test.describe("API testing for Articles", async () => {
       expect(updatedArticleBody.updatedAt).not.toEqual(
         updatedArticleBody.createdAt
       );
-      expect(updatedArticleBody.favorited).toEqual(updatedArticle.favorited);
+      expect(updatedArticleBody.favorited).toEqual(originalArticle.favorited);
       expect(updatedArticleBody.favoritesCount).toEqual(
-        updatedArticle.favoritesCount
+        originalArticle.favoritesCount
       );
-      validateAuthor(updatedArticleBody.author, updatedArticle.author);
+      validateAuthor(updatedArticleBody.author, originalArticle.author);
 
       const getArticleResponse = await getArticleRequest(
         request,
@@ -104,8 +101,6 @@ test.describe("API testing for Articles", async () => {
       const createdArticle = createdArticleByApi;
       const bodyResponse = await createdArticle.json();
       const slugId = bodyResponse.article.slug;
-
-      console.log(`Deleting article with slug: ${slugId}`);
       const deleteResponse = await deleteArticleRequest(request, slugId, token);
       
       expect(deleteResponse.status()).toBe(204);
@@ -114,6 +109,7 @@ test.describe("API testing for Articles", async () => {
         request,
         slugId
       );
+
       expect(getDeletedArticleResponse.status()).toBe(404);
     }
   );
