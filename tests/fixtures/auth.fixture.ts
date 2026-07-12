@@ -1,7 +1,7 @@
 import { test as base, Page } from "@playwright/test";
 import { UserFactory } from "../../utils/userFactory";
 import { Endpoints } from "../../utils/endpoints";
-import { postLoginRequest } from "../../utils/api/auth.app"
+import { postLoginRequest } from "../../utils/api/auth.app";
 
 type AuthFixtures = {
   token: string;
@@ -10,12 +10,14 @@ type AuthFixtures = {
 
 export const test = base.extend<AuthFixtures>({
   token: async ({ request }, use) => {
-    const user = UserFactory.realUser();
+    if (!process.env.JWT_TOKEN) {
+      const user = UserFactory.realUser();
+      const response = await postLoginRequest(user, request);
+      const body = await response.json();
 
-    const response = await postLoginRequest(user, request);
-
-    const body = await response.json();
-    await use(body.user.token);
+      process.env.JWT_TOKEN = body.user.token;
+    }
+    await use(process.env.JWT_TOKEN!);
   },
 
   authenticatedPage: async ({ browser, token }, use) => {
@@ -25,9 +27,10 @@ export const test = base.extend<AuthFixtures>({
     await page.addInitScript((jwt) => {
       window.localStorage.setItem("jwtToken", jwt);
     }, token);
-    
     await page.goto("/");
-    await page.waitForResponse(`${process.env.API_URL}${Endpoints.articles(10,0)}`);
+    await page.waitForResponse(
+      `${process.env.API_URL}${Endpoints.articles(10, 0)}`
+    );
 
     await use(page);
   },

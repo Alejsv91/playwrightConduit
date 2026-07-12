@@ -1,5 +1,5 @@
 import { test } from "../fixtures/article.fixture";
-import { expect } from "@playwright/test";
+import { APIRequestContext, expect } from "@playwright/test";
 import { UserFactory } from "../../utils/userFactory";
 import {
   ArticleResponse,
@@ -12,16 +12,15 @@ import {
   updateArticleRequest,
   getArticleRequest,
   deleteArticleRequest,
+  createArticleRequest,
 } from "../../utils/api/article.app";
-import { standardArticle } from "../../utils/articleFactory";
 
 test.describe("API testing for Articles", async () => {
   let testArticle: Article;
   let realUser = UserFactory.realUser();
-  let createdBodyResponse: {};
 
   test(
-    "Creating article by API",
+    "Create articles with multiple tags",
     { tag: ["@api", "@positive"] },
     async ({ createdArticleByApi, articleObject }) => {
       testArticle = articleObject;
@@ -37,8 +36,34 @@ test.describe("API testing for Articles", async () => {
       expect(body.article.favorited).toEqual(false);
       expect(body.article.favoritesCount).toEqual(0);
       validateAuthor(body.article.author, { ...realUser } as Author);
+    }
+  );
 
-      createdBodyResponse = body;
+  test(
+    "Create articles without tag",
+    { tag: ["@api", "@positive"] },
+    async ({ browserName, request, token }) => {
+      const articleWithoutTag = ArticleFactory.standardArtcile(
+        browserName,
+        true
+      );
+      const createdArticleResponse = await createArticleRequest(
+        request,
+        articleWithoutTag,
+        token
+      );
+
+      expect(createdArticleResponse.status()).toBe(201);
+
+      const body = await createdArticleResponse.json();
+      const expectedSlug = articleWithoutTag.title.replace(/ /g, "-");
+
+      expect(body.article.slug).toContain(expectedSlug);
+      expect(body.createdAt).not.toBeNull();
+      expect(body.article.updatedAt).toEqual(body.article.createdAt);
+      expect(body.article.favorited).toEqual(false);
+      expect(body.article.favoritesCount).toEqual(0);
+      
     }
   );
 
@@ -91,6 +116,7 @@ test.describe("API testing for Articles", async () => {
         request,
         updatedArticleBody.slug
       );
+
       expect(getArticleResponse.status()).toBe(200);
       validateArticleResponse(
         (await getArticleResponse.json()).article,
@@ -121,12 +147,71 @@ test.describe("API testing for Articles", async () => {
 
   // Negative scenarios
   test(
-    "Craete article without title",
+    "Create article without title",
     { tag: ["@api", "@negative"] },
-    async ({ request, token }) => {
-      
+    async ({ request, token, browserName }) => {
+      const articleWithoutTitle = ArticleFactory.standardArtcile(
+        browserName,
+        true
+      );
+
+      articleWithoutTitle.title = "";
+      await validateInvalidCreationRequestResponse(
+        request,
+        articleWithoutTitle,
+        token
+      );
     }
   );
+
+  test(
+    "Create article without description",
+    { tag: ["@api", "@negative"] },
+    async ({ request, token, browserName }) => {
+      const articleWithoutTitle = ArticleFactory.standardArtcile(
+        browserName,
+        true
+      );
+      articleWithoutTitle.description = "";
+
+      await validateInvalidCreationRequestResponse(
+        request,
+        articleWithoutTitle,
+        token
+      );
+    }
+  );
+
+  test(
+    "Create article without body",
+    { tag: ["@api", "@negative"] },
+    async ({ request, token, browserName }) => {
+      const articleWithoutTitle = ArticleFactory.standardArtcile(
+        browserName,
+        true
+      );
+      articleWithoutTitle.body = "";
+
+      await validateInvalidCreationRequestResponse(
+        request,
+        articleWithoutTitle,
+        token
+      );
+    }
+  );
+
+  async function validateInvalidCreationRequestResponse(
+    request: APIRequestContext,
+    unexpectedArticle: Article,
+    token: string
+  ) {
+    const createdArticleResponse = await createArticleRequest(
+      request,
+      unexpectedArticle,
+      token
+    );
+    expect(createdArticleResponse.status()).toBe(422);
+  }
 
   function validateAuthor(author: Author, expectedAuthor: Author) {
     expect(author.username).toEqual(expectedAuthor.username);
