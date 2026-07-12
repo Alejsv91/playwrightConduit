@@ -1,7 +1,11 @@
 import { test } from "../fixtures/article.fixture";
 import { expect } from "@playwright/test";
 import { UserFactory } from "../../utils/userFactory";
-import { ArticleResponse, Article, ArticlePutRequest } from "../../utils/interfaces/article";
+import {
+  ArticleResponse,
+  Article,
+  ArticlePutRequest,
+} from "../../utils/interfaces/article";
 import { Author } from "../../utils/interfaces/author";
 import { ArticleFactory } from "../../utils/articleFactory";
 import {
@@ -9,6 +13,7 @@ import {
   getArticleRequest,
   deleteArticleRequest,
 } from "../../utils/api/article.app";
+import { standardArticle } from "../../utils/articleFactory";
 
 test.describe("API testing for Articles", async () => {
   let testArticle: Article;
@@ -102,7 +107,7 @@ test.describe("API testing for Articles", async () => {
       const bodyResponse = await createdArticle.json();
       const slugId = bodyResponse.article.slug;
       const deleteResponse = await deleteArticleRequest(request, slugId, token);
-      
+
       expect(deleteResponse.status()).toBe(204);
 
       const getDeletedArticleResponse = await getArticleRequest(
@@ -111,6 +116,15 @@ test.describe("API testing for Articles", async () => {
       );
 
       expect(getDeletedArticleResponse.status()).toBe(404);
+    }
+  );
+
+  // Negative scenarios
+  test(
+    "Craete article without title",
+    { tag: ["@api", "@negative"] },
+    async ({ request, token }) => {
+      
     }
   );
 
