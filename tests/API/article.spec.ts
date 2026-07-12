@@ -1,13 +1,19 @@
 import { test } from "../fixtures/article.fixture";
 import { expect } from "@playwright/test";
 import { Endpoints } from "../../utils/endpoints";
-import { ArticleFactory } from "../../utils/articleFactory";
 import { UserFactory } from "../../utils/userFactory";
+import { ArticleResponse, Article } from "../../utils/interfaces/article";
+import { Author } from "../../utils/interfaces/author";
+import { ArticleFactory } from "../../utils/articleFactory";
+import {
+  updateArticleRequest,
+  getArticleRequest,
+} from "../../utils/api/article.app";
 
 test.describe("API testing for Articles", async () => {
-  let testArticle;
+  let testArticle: Article;
   let realUser = UserFactory.realUser();
-  let createdBodyResponse;
+  let createdBodyResponse: {};
   let articleURL = `${process.env.API_URL}${Endpoints.articles()}`;
 
   test(
@@ -23,19 +29,12 @@ test.describe("API testing for Articles", async () => {
       const body = await articleResponse.json();
       const expectedSlug = testArticle.title.replace(/ /g, "-");
 
-      expect(body.article.title).toEqual(testArticle.title);
-      expect(body.article.description).toEqual(testArticle.description);
-      expect(body.article.body).toEqual(testArticle.body);
-      expect(body.article.tagList.sort()).toEqual(testArticle.tagList);
       expect(body.article.slug).toContain(expectedSlug);
       expect(body.createdAt).not.toBeNull();
       expect(body.article.updatedAt).toEqual(body.article.createdAt);
       expect(body.article.favorited).toEqual(false);
       expect(body.article.favoritesCount).toEqual(0);
-      expect(body.article.author.username).toEqual(realUser.username);
-      expect(body.article.author.bio).toEqual(realUser.bio);
-      expect(body.article.author.image).toEqual(realUser.image);
-      expect(body.article.author.following).toEqual(realUser.following);
+      validateAuthor(body.article.author, { ...realUser } as Author);
 
       createdBodyResponse = body;
     }
@@ -50,12 +49,68 @@ test.describe("API testing for Articles", async () => {
       const slugId = bodyResponse.article.slug;
       expect(createdArticle.status()).toBe(201);
 
-      const getArticleResponse = await request.get(`${articleURL}${slugId}`, {
-        headers: {
-          authorization: `Token ${token}`,
-        },
-      });
+      const getArticleResponse = await getArticleRequest(request, slugId);
       expect(getArticleResponse.status()).toBe(200);
     }
   );
+
+  test(
+    "Update article by API",
+    { tag: ["@api", "@positive"] },
+    async ({ createdArticleByApi, token, request }) => {
+      const newArticleResponse = createdArticleByApi;
+      const body = await newArticleResponse.json();
+      const originalArticle: ArticleResponse = body.article;
+      const updatedArticle: ArticleResponse =
+        ArticleFactory.updatedArticle(originalArticle);
+      const updateResponse = await updateArticleRequest(
+        request,
+        updatedArticle,
+        token
+      );
+
+      expect(updateResponse.status()).toBe(200);
+
+      const updatedBody = await updateResponse.json();
+      const updatedArticleBody = updatedBody.article;
+
+      validateArticleResponse(updatedArticleBody, updatedArticle);
+      expect(updatedArticleBody.slug).not.toEqual(updatedArticle.slug);
+      expect(updatedArticleBody.updatedAt).not.toEqual(
+        updatedArticleBody.createdAt
+      );
+      expect(updatedArticleBody.favorited).toEqual(updatedArticle.favorited);
+      expect(updatedArticleBody.favoritesCount).toEqual(
+        updatedArticle.favoritesCount
+      );
+      validateAuthor(updatedArticleBody.author, updatedArticle.author);
+
+      const getArticleResponse = await getArticleRequest(
+        request,
+        updatedArticleBody.slug
+      );
+      expect(getArticleResponse.status()).toBe(200);
+      validateArticleResponse(
+        (await getArticleResponse.json()).article,
+        updatedArticle
+      );
+    }
+  );
+
+  function validateAuthor(author: Author, expectedAuthor: Author) {
+    expect(author.username).toEqual(expectedAuthor.username);
+    expect(author.bio).toEqual(expectedAuthor.bio);
+    expect(author.image).toEqual(expectedAuthor.image);
+    expect(author.following).toEqual(expectedAuthor.following);
+  }
+
+  function validateArticleResponse(
+    article: ArticleResponse,
+    expectedArticle: Article
+  ) {
+    expect(article.title).toEqual(expectedArticle.title);
+    expect(article.description).toEqual(expectedArticle.description);
+    expect(article.body).toEqual(expectedArticle.body);
+    expect(article.tagList.sort()).toEqual(expectedArticle.tagList.sort());
+  }
 });

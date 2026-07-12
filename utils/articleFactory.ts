@@ -1,6 +1,15 @@
-import { Article } from "./interfaces/article";
+import { Article, ArticleResponse } from "./interfaces/article";
 
 export const ArticleFactory = {
+  updatedArticle:(currentArticle: ArticleResponse): ArticleResponse => {
+    return {...currentArticle,
+      title: `${currentArticle.title} updated`,
+          description: "Updated Description",
+          body: "Updated Body",
+          tagList: ["API", "Test", "Updated"]
+    }
+  },
+  
   multipleTagsArticle: (browserName: string, isApiTest: boolean): Article => {
     return {
       title: `Test from ${isApiTest ? 'API' : 'UI'} from ${browserName} ${Date.now()}`,
@@ -10,3 +19,7 @@ export const ArticleFactory = {
     };
   }
 };
+
+
+
+
