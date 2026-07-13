@@ -39,7 +39,7 @@ export async function getAiLocatorSuggestions(
   });
 
   if (!response.ok) {
-    throw new Error(`Anthropic API respondió con status ${response.status}`);
+    throw new Error(`Anthropic API status ${response.status}`);
   }
 
   const data = await response.json();

@@ -22,11 +22,11 @@ test.describe("API testing for Articles", async () => {
   test(
     "Create articles with multiple tags",
     { tag: ["@api", "@positive"] },
-    async ({ createdArticleByApi, articleObject }) => {
+    async ({ createArticleByApi, articleObject }) => {
       testArticle = articleObject;
       realUser.following = false;
 
-      const articleResponse = createdArticleByApi;
+      const articleResponse = createArticleByApi;
       const body = await articleResponse.json();
       const expectedSlug = testArticle.title.replace(/ /g, "-");
 
@@ -69,8 +69,8 @@ test.describe("API testing for Articles", async () => {
   test(
     "Read the created article",
     { tag: ["@api", "@positive"] },
-    async ({ request, createdArticleByApi }) => {
-      const createdArticle = createdArticleByApi;
+    async ({ request, createArticleByApi }) => {
+      const createdArticle = createArticleByApi;
       const bodyResponse = await createdArticle.json();
       const slugId = bodyResponse.article.slug;
       expect(createdArticle.status()).toBe(201);
@@ -83,8 +83,8 @@ test.describe("API testing for Articles", async () => {
   test(
     "Update article by API",
     { tag: ["@api", "@positive"] },
-    async ({ createdArticleByApi, token, request }) => {
-      const newArticleResponse = createdArticleByApi;
+    async ({ createArticleByApi, token, request }) => {
+      const newArticleResponse = createArticleByApi;
       const body = await newArticleResponse.json();
       const originalArticle: ArticleResponse = body.article;
       const updatedArticle: ArticlePutRequest =
@@ -127,8 +127,8 @@ test.describe("API testing for Articles", async () => {
   test(
     "Delete article by API",
     { tag: ["@api", "@positive"] },
-    async ({ createdArticleByApi, request, token }) => {
-      const createdArticle = createdArticleByApi;
+    async ({ createArticleByApi, request, token }) => {
+      const createdArticle = createArticleByApi;
       const bodyResponse = await createdArticle.json();
       const slugId = bodyResponse.article.slug;
       const deleteResponse = await deleteArticleRequest(request, slugId, token);

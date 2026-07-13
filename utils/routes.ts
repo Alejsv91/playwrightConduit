@@ -1,4 +1,6 @@
 export const Routes = {
     login: '/login',
-    editArticle: '/editor'
+    editArticle: '/editor',
+    article: '/article/'
+
 }

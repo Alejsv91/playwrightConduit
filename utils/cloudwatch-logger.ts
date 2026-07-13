@@ -13,6 +13,9 @@ import {
     throw new Error("Missing required environment variable: SELF_HEAL_LOG_GROUP");
   }
   
+  //CloudWatchLogsClient is a SKD class and allow to send logs to AWS Cloudwatch. We create a log stream for each test run and send logs to that stream.
+  //PutLogEventsCommand is a SKD command that allows to send logs to Cloudwatch. CreateLogStreamCommand is a SKD command that allows to create a log stream in Cloudwatch.
+  //CreateLogStreamCommand is used to create a log stream in Cloudwatch. PutLogEventsCommand is used to send logs to Cloudwatch.
   const client = new CloudWatchLogsClient({ region: AWS_REGION });
   const logStreamName = `run-${randomUUID()}`;
   let streamCreated = false;

@@ -9,7 +9,7 @@ test.describe("Login Test Cases", async () => {
   const fakeUser = UserFactory.fakeUser();
   const realUser = UserFactory.realUser();
 
-  test.beforeEach(async ({ page }, testInfo) => {
+  test.beforeEach(async ({ page }) => {
     const [apiResponse] = await Promise.all([
       page.waitForResponse(`**${Endpoints.articles(10, 0)}`),
       page.goto("/"),

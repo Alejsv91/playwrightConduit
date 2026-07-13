@@ -25,12 +25,12 @@ export default class LoginPage extends MainPage {
           locator: page.getByRole("button", { name: "Sign In" }),
         },
         {
-          strategy: "cssLocator",
-          locator: page.locator('fieldset > button:has-text("Sign In")'),
-        },
-        {
           strategy: "getByText",
           locator: page.locator("fieldset").getByText("Sign In"),
+        },
+        {
+          strategy: "cssLocator",
+          locator: page.locator('fieldset > button:has-text("Sign In")'),
         },
       ],
     };
@@ -42,7 +42,11 @@ export default class LoginPage extends MainPage {
   async addLoginCredentials(username: string) {}
 
   async clickOnSignInButton() {
-    const locator = await resilientLocator(this.page, this.signInButton, this.testName);
+    const locator = await resilientLocator(
+      this.page,
+      this.signInButton,
+      this.testName
+    );
     await locator.click();
   }
 
