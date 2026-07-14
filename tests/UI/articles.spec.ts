@@ -78,6 +78,12 @@ test.describe("test cases related with articles", async () => {
       await page.waitForURL(`**/${article.slug}`);
       expect(page.url()).toContain(article.slug);
 
+      const articlePage = new Article(page, testInfo.title);
+
+      await expect(articlePage.getTitleElement()).toHaveText(article.title);
+      await expect(articlePage.getDescriptionElement()).toHaveText(article.body);
+      await expect(articlePage.getTitleAuthorLink()).toHaveText(article.author.username);
+
   });
 
   async function addTags(
