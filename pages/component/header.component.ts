@@ -11,15 +11,16 @@ export class HeaderComponent {
     this.page = page;
     this.webIcon = page.locator(".web-icon");
     this.signIn = page.getByRole("link", { name: "Sign In" });
-    this.newArticle = page.getByText(" New Article ");
+    this.newArticle = page
+      .locator("nav.navbar-light")
+      .getByRole("link", { name: " New Article " });
   }
 
-  getSignInLink(): Locator{
+  getSignInLink(): Locator {
     return this.signIn;
   }
 
-  getNewArticleLink(): Locator
-  {
+  getNewArticleLink(): Locator {
     return this.newArticle;
   }
 

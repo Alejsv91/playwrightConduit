@@ -1,5 +1,7 @@
 import { Locator, Page } from "@playwright/test";
 import MainPage from "../pages/main.page";
+import { ArticleFactory } from "../utils/articleFactory";
+import { Article } from "../utils/interfaces/article";
 
 export default class EditArticle extends MainPage {
   private readonly titleTextbox: Locator;
@@ -61,5 +63,11 @@ export default class EditArticle extends MainPage {
 
   async fillTitleTextbox(title: string) {
     await this.titleTextbox.fill(title);
+  }
+
+  async fillArticleInfo(article: Article){
+    await this.fillTitleTextbox(article.title);
+    await this.fillAboutTextbox(article.description);
+    await this.fillDescriptionTextbox(article.body);
   }
 }

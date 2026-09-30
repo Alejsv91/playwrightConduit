@@ -2,11 +2,11 @@ import { Locator, Page } from "@playwright/test";
 import { SelfHealingMcp } from "./interfaces/selfHealingMcp";
 import { AiLocatorSuggestion } from "./interfaces/aiLocatorSuggestion";
 import { getAiLocatorSuggestions } from "./aiLocatorClient";
-import { logSelectorFailure } from "./cloudwatch-logger";
+import { logSelectorFailure, logSelectorSuccess } from "./cloudwatch-logger";
 
 function buildLocatorFromSuggestion(
   page: Page,
-  suggestion: AiLocatorSuggestion,
+  suggestion: AiLocatorSuggestion
 ): Locator {
   switch (suggestion.method) {
     case "role":
@@ -79,9 +79,11 @@ export async function resilientLocator(
     try {
       const aiLocator = buildLocatorFromSuggestion(page, suggestion);
       await aiLocator.waitFor({ state: "visible", timeout: 5000 });
-      await logSelectorFailure(
+      await logSelectorSuccess(
         testName,
-        suggestion.method,
+        `suggested method: ${suggestion.method} ${
+          suggestion.value || suggestion.role || suggestion.name
+        }. other information ${JSON.stringify(suggestion)}` ,
         `AI suggestion at index ${index} matched successfully.`
       );
       console.warn(

@@ -31,6 +31,31 @@ import {
     }
     streamCreated = true;
   }
+
+  export async function logSelectorSuccess(
+    testName: string,
+    locatorStrategy: string,
+    message: string
+  ) {
+    await ensureLogStream();
+    await client.send(
+      new PutLogEventsCommand({
+        logGroupName: LOG_GROUP_NAME,
+        logStreamName,
+        logEvents: [
+          {
+            message: JSON.stringify({
+              testName,
+              selector: locatorStrategy,
+              message: message,
+              timestamp: Date.now(),
+            }),
+            timestamp: Date.now(),
+          },
+        ],
+      })
+    );
+  }
   
   export async function logSelectorFailure(
     testName: string,
