@@ -45,6 +45,15 @@ export default class EditArticle extends MainPage {
     return this.titleTextbox;
   }
 
+  async addTags(
+    tags: Array<string>,
+  ) {
+    for (const tag of tags) {
+      await this.AddTag(tag);
+      await this.page.keyboard.press("Enter");
+    }
+  }
+
   async clickOnPublishArticle(){
     await this.publishArticleButton.click();
   }
@@ -54,14 +63,17 @@ export default class EditArticle extends MainPage {
   }
 
   async fillDescriptionTextbox(descriptionContent: string){
+    await this.descriptionTextbox.clear();
     await this.descriptionTextbox.fill(descriptionContent);
   }
 
   async fillAboutTextbox(aboutContent: string){
+    await this.aboutTextbox.clear();
     await this.aboutTextbox.fill(aboutContent);
   }
 
   async fillTitleTextbox(title: string) {
+    await this.titleTextbox.clear();
     await this.titleTextbox.fill(title);
   }
 

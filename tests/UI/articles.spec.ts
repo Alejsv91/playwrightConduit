@@ -9,6 +9,7 @@ import { Page } from "@playwright/test";
 import { ArticleFactory } from "../../utils/articleFactory";
 import ArticlePage from "../../pages/article.page";
 import { ArticleResponse } from "../../utils/interfaces/article";
+import { EditArticleAssertions } from "../../assertions/editArticle.assertions";
 
 test.describe("test cases related with articles", async () => {
   const realUser = UserFactory.realUser();
@@ -32,23 +33,16 @@ test.describe("test cases related with articles", async () => {
       );
       const editArticle = new EditArticle(authenticatedPage);
 
-      //Creating article
       await expect(
         editArticle.getUsernameHeader(realUser.username!)
       ).toBeVisible();
-      await editArticle.fillTitleTextbox(testArticle.title);
-      await expect(editArticle.getTitleTextBox()).toHaveValue(
-        testArticle.title
-      );
-      await editArticle.fillAboutTextbox(testArticle.description);
-      await expect(editArticle.getAboutTextBox()).toHaveValue(
-        testArticle.description
-      );
-      await editArticle.fillDescriptionTextbox(testArticle.body);
-      await expect(editArticle.getDescriptionTextBox()).toHaveValue(
-        testArticle.body
-      );
-      await addTags(testArticle.tagList, editArticle, authenticatedPage);
+
+      //Creating article
+      await EditArticleAssertions.validateFormIsEnable(editArticle);
+      await editArticle.fillArticleInfo(testArticle);
+      await editArticle.addTags(testArticle.tagList);
+
+      await EditArticleAssertions.validateArticleInfo(editArticle, testArticle);
 
       //Validate article is created as expected
       const [apiResponse] = await Promise.all([
@@ -73,44 +67,57 @@ test.describe("test cases related with articles", async () => {
     }
   );
 
-  test.only(
+  test(
     "Update an article",
     { tag: ["@ui", "@positive"] },
     async ({ createdArticleByApi, authenticatedPage }) => {
+
       // Creating the new article
       const articleResponse = createdArticleByApi;
       const body = await articleResponse.json();
+      const currentArticleInfo: ArticleResponse = body.article;
       const updateArticleInfo = ArticleFactory.updatedArticle(body.article);
-      updateArticleInfo.tagList.push("update")
+      updateArticleInfo.tagList.push("update");
 
       console.log(`${Routes.article}${body.article.slug}`);
       await authenticatedPage.goto(`${Routes.article}/${body.article.slug}`);
       const articlePage = new ArticlePage(authenticatedPage);
-      await articlePage.getEditButtonOnBanner().click();
+      await Promise.all([
+        authenticatedPage.waitForURL("**/editor/**"),
+        articlePage.getEditButtonOnBanner().click(),
+      ]);
 
       const editArticlePage = new EditArticle(authenticatedPage);
-      await editArticlePage.fillArticleInfo(updateArticleInfo);
+      await expect(editArticlePage.getTitleTextBox()).toBeVisible();
+      await expect(editArticlePage.getAboutTextBox()).toBeVisible();
+      await expect(editArticlePage.getDescriptionTextBox()).toBeVisible();
+
       //validate info was added
-
-      await expect(editArticlePage.getTitleTextBox()).toHaveValue(
-        updateArticleInfo.title
+      await EditArticleAssertions.validateArticleInfo(
+        editArticlePage,
+        currentArticleInfo
       );
 
-      await expect(editArticlePage.getAboutTextBox()).toHaveValue(
-        updateArticleInfo.description
-      );
+      //Updating info
+      await editArticlePage.fillArticleInfo(updateArticleInfo);
+      await editArticlePage.addTags(["update"]);
 
-      await expect(editArticlePage.getDescriptionTextBox()).toHaveValue(
-        updateArticleInfo.body
+      //validate info was added
+      await EditArticleAssertions.validateArticleInfo(
+        editArticlePage,
+        updateArticleInfo
       );
-
-      await addTags(["update"],editArticlePage, authenticatedPage)
 
       //Validate article is created as expected
-      const putRequestUrl= `${process.env.API_URL}${Endpoints.articles()}${body.article.slug}`
+      const putRequestUrl = `${process.env.API_URL}${Endpoints.articles()}${
+        body.article.slug
+      }`;
+
       const [apiResponse] = await Promise.all([
         authenticatedPage.waitForResponse(
-          putRequestUrl
+          (response) =>
+            response.url() === putRequestUrl &&
+            response.request().method() === "PUT"
         ),
         editArticlePage.clickOnPublishArticle(),
       ]);
@@ -119,23 +126,14 @@ test.describe("test cases related with articles", async () => {
       const expectedUrl = bodyResponse.article.slug;
       await authenticatedPage.waitForURL(`**/${expectedUrl}`);
 
-      // const articlePage = new ArticlePage(authenticatedPage);
-      // const updatedArticlePage = new ArticlePage(authenticatedPage)
-      await expect(articlePage.getTitleElement()).toHaveText(updateArticleInfo.title);
+      await expect(articlePage.getTitleElement()).toHaveText(
+        updateArticleInfo.title
+      );
+
       await expect(articlePage.getDescriptionElement()).toHaveText(
         updateArticleInfo.body
       );
-
-    })
-
-  async function addTags(
-    tags: Array<string>,
-    editArticle: EditArticle,
-    authenticatedPage: Page
-  ) {
-    for (const tag of tags) {
-      await editArticle.AddTag(tag);
-      await authenticatedPage.keyboard.press("Enter");
     }
-  }
+  );
+
 });
